@@ -13,7 +13,7 @@ public class JsonParser {
 		try {
 			json = mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
-			System.out.println("There was a problem converting customer map to json String: " + e.getOriginalMessage());
+			System.out.println("There was a problem converting object to json String: " + e.getOriginalMessage());
 		}
 		return json;
 	}

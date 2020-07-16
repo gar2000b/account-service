@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onlineinteract.workflow.domain.account.Account;
+import com.onlineinteract.workflow.domain.account.v1.Account;
 import com.onlineinteract.workflow.repository.AccountRepository;
-import com.onlineinteract.workflow.utility.JsonParser;
 
 @Controller
 @EnableAutoConfiguration
@@ -31,7 +30,7 @@ public class AccountController {
 		String accountId = UUID.randomUUID().toString();
 		account.setId(accountId);
 		accountRepository.createAccount(account);
-		return new ResponseEntity<>("createAccount(): " + JsonParser.toJson(account), HttpStatus.OK);
+		return new ResponseEntity<>("createAccount(): " + account.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/account/{accountId}")
@@ -39,7 +38,7 @@ public class AccountController {
 	public ResponseEntity<String> getAccount(@PathVariable String accountId) {
 		System.out.println("*** getAccount() called with accountId of: " + accountId + " ***");
 		Account account = accountRepository.getAccount(accountId);
-		return new ResponseEntity<>("getAccount(): " + JsonParser.toJson(account), HttpStatus.OK);
+		return new ResponseEntity<>("getAccount(): " + account.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/accounts")
@@ -55,6 +54,6 @@ public class AccountController {
 	public ResponseEntity<String> updateAccount(@RequestBody Account account) {
 		System.out.println("*** updateAccount() called ***");
 		accountRepository.updateAccount(account);
-		return new ResponseEntity<>("updateAccount(): " + JsonParser.toJson(account), HttpStatus.OK);
+		return new ResponseEntity<>("updateAccount(): " + account.toString(), HttpStatus.OK);
 	}
 }
