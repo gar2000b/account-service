@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,7 +15,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.onlineinteract.workflow.bus.Producer;
-import com.onlineinteract.workflow.domain.account.v1.Account;
+import com.onlineinteract.workflow.domain.account.AccountEvent;
+import com.onlineinteract.workflow.domain.account.AccountV1;
+import com.onlineinteract.workflow.domain.account.AccountV2;
 import com.onlineinteract.workflow.repository.dbclient.DbClient;
 import com.onlineinteract.workflow.utility.JsonParser;
 import com.onlineinteract.workflow.utility.MongoUtility;
@@ -31,7 +34,7 @@ public class AccountRepository {
 	public AccountRepository() {
 	}
 
-	public void createAccount(Account account) {
+	public void createAccount(AccountV1 account) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase("accounts");
 		Document accountDocument = Document.parse(account.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
@@ -39,29 +42,45 @@ public class AccountRepository {
 		accountsCollection.insertOne(accountDocument);
 		System.out.println("Account Persisted to accounts collection");
 
-		account.setEventId(String.valueOf(account.getCreated()));
-		account.setEventType("AccountCreatedEvent");
+		AccountEvent accountEvent = new AccountEvent();
+		accountEvent.setCreated(new Date().getTime());
+		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
+		accountEvent.setEventType("AccountCreatedEvent");
+		accountEvent.setV1(account);
+		
+		AccountV2 accountV2 = new AccountV2();
+		accountV2.setEnabled("true");
+		accountV2.setManaged("true");
+		accountV2.setId("1234");
+		accountV2.setName("whatever");
+		accountV2.setOpeningBalance("67");
+		accountV2.setSavingsRate("1.1%");
+		accountV2.setType("some type");
+		accountEvent.setV2(accountV2);
 
-		producer.publishRecord("account-event-topic", account, account.getId().toString());
+		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV1().getId().toString());
 		System.out.println("AccountCreatedEvent Published to account-event-topic");
 	}
 
-	public void updateAccount(Account account) {
+	public void updateAccount(AccountV1 account) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase("accounts");
 		Document accountDocument = Document.parse(account.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
 		MongoUtility.removeEventMembers(accountDocument);
 		accountsCollection.replaceOne(new Document("id", account.getId()), accountDocument);
 		System.out.println("Account Updated in accounts collection");
-		
-		account.setEventId(String.valueOf(account.getCreated()));
-		account.setEventType("AccountUpdatedEvent");
 
-		producer.publishRecord("account-event-topic", account, account.getId().toString());
+		AccountEvent accountEvent = new AccountEvent();
+		accountEvent.setCreated(new Date().getTime());
+		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
+		accountEvent.setEventType("AccountUpdatedEvent");
+		accountEvent.setV1(account);
+
+		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV1().getId().toString());
 		System.out.println("AccountUpdatedEvent Published to account-event-topic");
 	}
 
-	public Account getAccount(String accountId) {
+	public AccountV1 getAccount(String accountId) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase("accounts");
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
 		BasicDBObject query = new BasicDBObject();
@@ -70,7 +89,7 @@ public class AccountRepository {
 		for (Document accountDocument : accountDocuments) {
 			System.out.println("Found: " + accountDocument.toJson());
 			MongoUtility.removeMongoId(accountDocument);
-			return JsonParser.fromJson(accountDocument.toJson(), Account.class);
+			return JsonParser.fromJson(accountDocument.toJson(), AccountV1.class);
 		}
 
 		return null;

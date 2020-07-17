@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onlineinteract.workflow.domain.account.v1.Account;
+import com.onlineinteract.workflow.domain.account.AccountV1;
 import com.onlineinteract.workflow.repository.AccountRepository;
 
 @Controller
@@ -25,7 +25,7 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> createAccount(@RequestBody Account account) {
+	public ResponseEntity<String> createAccount(@RequestBody AccountV1 account) {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
 		account.setId(accountId);
@@ -37,7 +37,7 @@ public class AccountController {
 	@ResponseBody
 	public ResponseEntity<String> getAccount(@PathVariable String accountId) {
 		System.out.println("*** getAccount() called with accountId of: " + accountId + " ***");
-		Account account = accountRepository.getAccount(accountId);
+		AccountV1 account = accountRepository.getAccount(accountId);
 		return new ResponseEntity<>("getAccount(): " + account.toString(), HttpStatus.OK);
 	}
 
@@ -51,7 +51,7 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> updateAccount(@RequestBody Account account) {
+	public ResponseEntity<String> updateAccount(@RequestBody AccountV1 account) {
 		System.out.println("*** updateAccount() called ***");
 		accountRepository.updateAccount(account);
 		return new ResponseEntity<>("updateAccount(): " + account.toString(), HttpStatus.OK);

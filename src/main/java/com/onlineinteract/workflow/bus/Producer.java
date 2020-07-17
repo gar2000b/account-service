@@ -7,20 +7,20 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.stereotype.Component;
 
-import com.onlineinteract.workflow.domain.account.v1.Account;
+import com.onlineinteract.workflow.domain.account.AccountEvent;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 
 @Component
 public class Producer {
-	private KafkaProducer<String, Account> producer;
+	private KafkaProducer<String, AccountEvent> producer;
 
 	public Producer() {
 		Properties producerProps = buildProducerProperties();
-		producer = new KafkaProducer<String, Account>(producerProps);
+		producer = new KafkaProducer<String, AccountEvent>(producerProps);
 	}
 
-	public void publishRecord(String topic, Account value, String key) {
+	public void publishRecord(String topic, AccountEvent value, String key) {
 		producer.send(new ProducerRecord<>(topic, key, value));
 	}
 
