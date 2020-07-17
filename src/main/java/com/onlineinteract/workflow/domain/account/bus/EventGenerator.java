@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 
 import com.onlineinteract.workflow.domain.account.AccountEvent;
 import com.onlineinteract.workflow.domain.account.AccountV1;
-import com.onlineinteract.workflow.domain.account.AccountV2;
 
 @Component
 public class EventGenerator {
-	
+
 	@Autowired
 	private Producer producer;
 
@@ -21,21 +20,11 @@ public class EventGenerator {
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
 		accountEvent.setEventType("AccountCreatedEvent");
 		accountEvent.setV1(account);
-		
-		AccountV2 accountV2 = new AccountV2();
-		accountV2.setEnabled("true");
-		accountV2.setManaged("true");
-		accountV2.setId("1234");
-		accountV2.setName("whatever");
-		accountV2.setOpeningBalance("67");
-		accountV2.setSavingsRate("1.1%");
-		accountV2.setType("some type");
-		accountEvent.setV2(accountV2);
 
 		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV1().getId().toString());
 		System.out.println("AccountCreatedEvent Published to account-event-topic");
 	}
-	
+
 	public void updateAccount(AccountV1 account) {
 		AccountEvent accountEvent = new AccountEvent();
 		accountEvent.setCreated(new Date().getTime());
