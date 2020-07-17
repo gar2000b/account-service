@@ -1,4 +1,4 @@
-package com.onlineinteract.workflow.bus;
+package com.onlineinteract.workflow.domain.account.bus;
 
 import java.util.Properties;
 
