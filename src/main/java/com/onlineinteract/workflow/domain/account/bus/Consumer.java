@@ -76,7 +76,7 @@ public class Consumer {
 				ConsumerRecords<String, AccountEvent> records = consumer.poll(100);
 				for (ConsumerRecord<String, AccountEvent> consumerRecord : records) {
 					System.out.println(
-							"Consuming event from customer-event-topic with id/key of: " + consumerRecord.key());
+							"Consuming event from account-event-topic with id/key of: " + consumerRecord.key());
 					AccountEvent account = (AccountEvent) consumerRecord.value();
 					if (account.getEventType().toString().contains("AccountCreatedEvent"))
 						accountRepository.createAccount(account.getV1());
