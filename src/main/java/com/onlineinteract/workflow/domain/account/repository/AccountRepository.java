@@ -14,7 +14,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.onlineinteract.workflow.dbclient.DbClient;
-import com.onlineinteract.workflow.domain.account.v1.AccountV1;
+import com.onlineinteract.workflow.domain.account.v2.AccountV2;
 import com.onlineinteract.workflow.utility.JsonParser;
 import com.onlineinteract.workflow.utility.MongoUtility;
 
@@ -27,7 +27,7 @@ public class AccountRepository {
 	public AccountRepository() {
 	}
 
-	public void createAccount(AccountV1 account) {
+	public void createAccount(AccountV2 account) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		Document accountDocument = Document.parse(account.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
@@ -35,7 +35,7 @@ public class AccountRepository {
 		System.out.println("Account Persisted to accounts collection");
 	}
 
-	public void updateAccount(AccountV1 account) {
+	public void updateAccount(AccountV2 account) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		Document accountDocument = Document.parse(account.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
@@ -43,7 +43,7 @@ public class AccountRepository {
 		System.out.println("Account Updated in accounts collection");
 	}
 
-	public AccountV1 getAccount(String accountId) {
+	public AccountV2 getAccount(String accountId) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
 		BasicDBObject query = new BasicDBObject();
@@ -52,7 +52,7 @@ public class AccountRepository {
 		for (Document accountDocument : accountDocuments) {
 			System.out.println("Found: " + accountDocument.toJson());
 			MongoUtility.removeMongoId(accountDocument);
-			return JsonParser.fromJson(accountDocument.toJson(), AccountV1.class);
+			return JsonParser.fromJson(accountDocument.toJson(), AccountV2.class);
 		}
 
 		return null;

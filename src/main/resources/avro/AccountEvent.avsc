@@ -1,4 +1,4 @@
-{"namespace": "com.onlineinteract.workflow.domain.account.v1",
+{"namespace": "com.onlineinteract.workflow.domain.account",
  "type": "record",
  "name":"AccountEvent",
  "fields": [
@@ -6,12 +6,22 @@
 	{"name":"created","type": "long"},
 	{"name":"eventType","type": "string"},
 	{"name":"v1","type":
-		{"name":"AccountV1","type":"record","fields":[
+		{"namespace": "com.onlineinteract.workflow.domain.account.v1","name":"AccountV1","type":"record","fields":[
 			{"name":"id","type": "string"},
 			{"name":"name","type": "string"},
 			{"name":"type","type": "string"},
 			{"name":"openingBalance","type": "string"},
 			{"name":"savingsRate","type": "string"}
+		]}
+	},
+	{"name":"v2","type":
+		{"namespace": "com.onlineinteract.workflow.domain.account.v2","name":"AccountV2","type":"record","fields":[
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"},
+			{"name":"enabled","type": "boolean"}
 		]}
 	}
   ]

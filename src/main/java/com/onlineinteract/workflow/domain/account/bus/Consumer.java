@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.onlineinteract.workflow.domain.account.v1.AccountEvent;
+import com.onlineinteract.workflow.domain.account.AccountEvent;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
@@ -79,9 +79,9 @@ public class Consumer {
 							"Consuming event from account-event-topic with id/key of: " + consumerRecord.key());
 					AccountEvent account = (AccountEvent) consumerRecord.value();
 					if (account.getEventType().toString().contains("AccountCreatedEvent"))
-						accountRepository.createAccount(account.getV1());
+						accountRepository.createAccount(account.getV2());
 					if (account.getEventType().toString().contains("AccountUpdatedEvent"))
-						accountRepository.updateAccount(account.getV1());
+						accountRepository.updateAccount(account.getV2());
 				}
 			}
 			shutdownConsumerProducer();
