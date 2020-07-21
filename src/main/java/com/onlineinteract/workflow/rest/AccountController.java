@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onlineinteract.workflow.domain.account.AccountV1;
+import com.onlineinteract.workflow.domain.account.v1.AccountV1;
 import com.onlineinteract.workflow.domain.account.bus.EventGenerator;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository;
 
