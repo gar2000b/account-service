@@ -29,30 +29,30 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> createAccount(@RequestBody AccountV1 account) {
+	public ResponseEntity<String> createAccount(@RequestBody AccountV1 accountV1) {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
-		account.setId(accountId);
-		accountRepository.createAccount(account);
-		eventGenerator.createAccount(account);
-		return new ResponseEntity<>("createAccount(): " + account.toString(), HttpStatus.OK);
+		accountV1.setId(accountId);
+		accountRepository.createAccount(accountV1);
+		eventGenerator.createAccount(accountV1);
+		return new ResponseEntity<>("createAccount(): " + accountV1.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> updateAccount(@RequestBody AccountV1 account) {
+	public ResponseEntity<String> updateAccount(@RequestBody AccountV1 accountV1) {
 		System.out.println("*** updateAccount() called ***");
-		accountRepository.updateAccount(account);
-		eventGenerator.updateAccount(account);
-		return new ResponseEntity<>("updateAccount(): " + account.toString(), HttpStatus.OK);
+		accountRepository.updateAccount(accountV1);
+		eventGenerator.updateAccount(accountV1);
+		return new ResponseEntity<>("updateAccount(): " + accountV1.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/account/{accountId}")
 	@ResponseBody
 	public ResponseEntity<String> getAccount(@PathVariable String accountId) {
 		System.out.println("*** getAccount() called with accountId of: " + accountId + " ***");
-		AccountV1 account = accountRepository.getAccount(accountId);
-		return new ResponseEntity<>("getAccount(): " + account.toString(), HttpStatus.OK);
+		AccountV1 accountV1 = accountRepository.getAccount(accountId);
+		return new ResponseEntity<>("getAccount(): " + accountV1.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/accounts")
