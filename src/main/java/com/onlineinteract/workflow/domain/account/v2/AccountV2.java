@@ -10,8 +10,8 @@ import org.apache.avro.specific.SpecificData;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -7780605602851147299L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AccountV2\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v2\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"},{\"name\":\"enabled\",\"type\":\"boolean\"}]}");
+  private static final long serialVersionUID = -9165770666614349930L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AccountV2\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v2\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"},{\"name\":\"enabled\",\"type\":\"boolean\"},{\"name\":\"addr1\",\"type\":\"string\"},{\"name\":\"addr2\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   @Deprecated public java.lang.CharSequence id;
   @Deprecated public java.lang.CharSequence name;
@@ -19,6 +19,8 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
   @Deprecated public java.lang.CharSequence openingBalance;
   @Deprecated public java.lang.CharSequence savingsRate;
   @Deprecated public boolean enabled;
+  @Deprecated public java.lang.CharSequence addr1;
+  @Deprecated public java.lang.CharSequence addr2;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -35,14 +37,18 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
    * @param openingBalance The new value for openingBalance
    * @param savingsRate The new value for savingsRate
    * @param enabled The new value for enabled
+   * @param addr1 The new value for addr1
+   * @param addr2 The new value for addr2
    */
-  public AccountV2(java.lang.CharSequence id, java.lang.CharSequence name, java.lang.CharSequence type, java.lang.CharSequence openingBalance, java.lang.CharSequence savingsRate, java.lang.Boolean enabled) {
+  public AccountV2(java.lang.CharSequence id, java.lang.CharSequence name, java.lang.CharSequence type, java.lang.CharSequence openingBalance, java.lang.CharSequence savingsRate, java.lang.Boolean enabled, java.lang.CharSequence addr1, java.lang.CharSequence addr2) {
     this.id = id;
     this.name = name;
     this.type = type;
     this.openingBalance = openingBalance;
     this.savingsRate = savingsRate;
     this.enabled = enabled;
+    this.addr1 = addr1;
+    this.addr2 = addr2;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -55,6 +61,8 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
     case 3: return openingBalance;
     case 4: return savingsRate;
     case 5: return enabled;
+    case 6: return addr1;
+    case 7: return addr2;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -69,6 +77,8 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
     case 3: openingBalance = (java.lang.CharSequence)value$; break;
     case 4: savingsRate = (java.lang.CharSequence)value$; break;
     case 5: enabled = (java.lang.Boolean)value$; break;
+    case 6: addr1 = (java.lang.CharSequence)value$; break;
+    case 7: addr2 = (java.lang.CharSequence)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -170,6 +180,38 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
   }
 
   /**
+   * Gets the value of the 'addr1' field.
+   * @return The value of the 'addr1' field.
+   */
+  public java.lang.CharSequence getAddr1() {
+    return addr1;
+  }
+
+  /**
+   * Sets the value of the 'addr1' field.
+   * @param value the value to set.
+   */
+  public void setAddr1(java.lang.CharSequence value) {
+    this.addr1 = value;
+  }
+
+  /**
+   * Gets the value of the 'addr2' field.
+   * @return The value of the 'addr2' field.
+   */
+  public java.lang.CharSequence getAddr2() {
+    return addr2;
+  }
+
+  /**
+   * Sets the value of the 'addr2' field.
+   * @param value the value to set.
+   */
+  public void setAddr2(java.lang.CharSequence value) {
+    this.addr2 = value;
+  }
+
+  /**
    * Creates a new AccountV2 RecordBuilder.
    * @return A new AccountV2 RecordBuilder
    */
@@ -207,6 +249,8 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
     private java.lang.CharSequence openingBalance;
     private java.lang.CharSequence savingsRate;
     private boolean enabled;
+    private java.lang.CharSequence addr1;
+    private java.lang.CharSequence addr2;
 
     /** Creates a new Builder */
     private Builder() {
@@ -243,6 +287,14 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
         this.enabled = data().deepCopy(fields()[5].schema(), other.enabled);
         fieldSetFlags()[5] = true;
       }
+      if (isValidValue(fields()[6], other.addr1)) {
+        this.addr1 = data().deepCopy(fields()[6].schema(), other.addr1);
+        fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.addr2)) {
+        this.addr2 = data().deepCopy(fields()[7].schema(), other.addr2);
+        fieldSetFlags()[7] = true;
+      }
     }
 
     /**
@@ -274,6 +326,14 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
       if (isValidValue(fields()[5], other.enabled)) {
         this.enabled = data().deepCopy(fields()[5].schema(), other.enabled);
         fieldSetFlags()[5] = true;
+      }
+      if (isValidValue(fields()[6], other.addr1)) {
+        this.addr1 = data().deepCopy(fields()[6].schema(), other.addr1);
+        fieldSetFlags()[6] = true;
+      }
+      if (isValidValue(fields()[7], other.addr2)) {
+        this.addr2 = data().deepCopy(fields()[7].schema(), other.addr2);
+        fieldSetFlags()[7] = true;
       }
     }
 
@@ -510,6 +570,84 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
       return this;
     }
 
+    /**
+      * Gets the value of the 'addr1' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getAddr1() {
+      return addr1;
+    }
+
+    /**
+      * Sets the value of the 'addr1' field.
+      * @param value The value of 'addr1'.
+      * @return This builder.
+      */
+    public com.onlineinteract.workflow.domain.account.v2.AccountV2.Builder setAddr1(java.lang.CharSequence value) {
+      validate(fields()[6], value);
+      this.addr1 = value;
+      fieldSetFlags()[6] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'addr1' field has been set.
+      * @return True if the 'addr1' field has been set, false otherwise.
+      */
+    public boolean hasAddr1() {
+      return fieldSetFlags()[6];
+    }
+
+
+    /**
+      * Clears the value of the 'addr1' field.
+      * @return This builder.
+      */
+    public com.onlineinteract.workflow.domain.account.v2.AccountV2.Builder clearAddr1() {
+      addr1 = null;
+      fieldSetFlags()[6] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'addr2' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getAddr2() {
+      return addr2;
+    }
+
+    /**
+      * Sets the value of the 'addr2' field.
+      * @param value The value of 'addr2'.
+      * @return This builder.
+      */
+    public com.onlineinteract.workflow.domain.account.v2.AccountV2.Builder setAddr2(java.lang.CharSequence value) {
+      validate(fields()[7], value);
+      this.addr2 = value;
+      fieldSetFlags()[7] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'addr2' field has been set.
+      * @return True if the 'addr2' field has been set, false otherwise.
+      */
+    public boolean hasAddr2() {
+      return fieldSetFlags()[7];
+    }
+
+
+    /**
+      * Clears the value of the 'addr2' field.
+      * @return This builder.
+      */
+    public com.onlineinteract.workflow.domain.account.v2.AccountV2.Builder clearAddr2() {
+      addr2 = null;
+      fieldSetFlags()[7] = false;
+      return this;
+    }
+
     @Override
     public AccountV2 build() {
       try {
@@ -520,6 +658,8 @@ public class AccountV2 extends org.apache.avro.specific.SpecificRecordBase imple
         record.openingBalance = fieldSetFlags()[3] ? this.openingBalance : (java.lang.CharSequence) defaultValue(fields()[3]);
         record.savingsRate = fieldSetFlags()[4] ? this.savingsRate : (java.lang.CharSequence) defaultValue(fields()[4]);
         record.enabled = fieldSetFlags()[5] ? this.enabled : (java.lang.Boolean) defaultValue(fields()[5]);
+        record.addr1 = fieldSetFlags()[6] ? this.addr1 : (java.lang.CharSequence) defaultValue(fields()[6]);
+        record.addr2 = fieldSetFlags()[7] ? this.addr2 : (java.lang.CharSequence) defaultValue(fields()[7]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
