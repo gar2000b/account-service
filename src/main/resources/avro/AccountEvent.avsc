@@ -5,14 +5,15 @@
 	{"name":"eventId","type": "string"},
 	{"name":"created","type": "long"},
 	{"name":"eventType","type": "string"},
-	{"name":"v1","type":
+	{"name":"v1","type":["null",
 		{"namespace": "com.onlineinteract.workflow.domain.account.v1","name":"AccountV1","type":"record","fields":[
 			{"name":"id","type": "string"},
 			{"name":"name","type": "string"},
 			{"name":"type","type": "string"},
 			{"name":"openingBalance","type": "string"},
 			{"name":"savingsRate","type": "string"}
-		]}
+		]}],
+    	"default": null
 	}
   ]
 }
