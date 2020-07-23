@@ -21,12 +21,13 @@ public class EventGenerator {
 		accountEvent.setCreated(new Date().getTime());
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
 		accountEvent.setEventType("AccountCreatedEvent");
+		accountEvent.setVersion(2L);
 		accountEvent.setV2(accountV2);
 		
 		AccountV1 accountV1 = Clone.cloneAccountV1FromV2(accountV2);
 		accountEvent.setV1(accountV1);
 
-		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV1().getId().toString());
+		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV2().getId().toString());
 		System.out.println("AccountCreatedEvent Published to account-event-topic");
 	}
 
@@ -35,12 +36,13 @@ public class EventGenerator {
 		accountEvent.setCreated(new Date().getTime());
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
 		accountEvent.setEventType("AccountUpdatedEvent");
+		accountEvent.setVersion(2L);
 		accountEvent.setV2(accountV2);
 		
 		AccountV1 accountV1 = Clone.cloneAccountV1FromV2(accountV2);
 		accountEvent.setV1(accountV1);
 
-		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV1().getId().toString());
+		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV2().getId().toString());
 		System.out.println("AccountUpdatedEvent Published to account-event-topic");
 	}
 }
