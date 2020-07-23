@@ -22,9 +22,9 @@
 			{"name":"type","type": "string"},
 			{"name":"openingBalance","type": "string"},
 			{"name":"savingsRate","type": "string"},
-			{"name":"enabled","type": "boolean"},
-			{"name":"addr1","type": "string"},
-			{"name":"addr2","type": "string"}
+			{"name":"enabled","type": ["null","boolean"],"default": true},
+			{"name":"addr1","type": ["null","string"],"default": ""},
+			{"name":"addr2","type": ["null","string"],"default": ""}
 		]}],
     	"default": null
 	}
