@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.onlineinteract.workflow.domain.account.bus.EventGenerator;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository;
-import com.onlineinteract.workflow.domain.account.v2.AccountV2;
+import com.onlineinteract.workflow.domain.account.v3.AccountV3;
 
 @Controller
 @EnableAutoConfiguration
@@ -29,30 +29,30 @@ public class AccountController {
 
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> createAccount(@RequestBody AccountV2 accountV2) {
+	public ResponseEntity<String> createAccount(@RequestBody AccountV3 accountV3) {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
-		accountV2.setId(accountId);
-		accountRepository.createAccount(accountV2);
-		eventGenerator.createAccount(accountV2);
-		return new ResponseEntity<>("createAccount(): " + accountV2.toString(), HttpStatus.OK);
+		accountV3.setId(accountId);
+		accountRepository.createAccount(accountV3);
+		eventGenerator.createAccount(accountV3);
+		return new ResponseEntity<>("createAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
-	public ResponseEntity<String> updateAccount(@RequestBody AccountV2 accountV2) {
+	public ResponseEntity<String> updateAccount(@RequestBody AccountV3 accountV3) {
 		System.out.println("*** updateAccount() called ***");
-		accountRepository.updateAccount(accountV2);
-		eventGenerator.updateAccount(accountV2);
-		return new ResponseEntity<>("updateAccount(): " + accountV2.toString(), HttpStatus.OK);
+		accountRepository.updateAccount(accountV3);
+		eventGenerator.updateAccount(accountV3);
+		return new ResponseEntity<>("updateAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/account/{accountId}")
 	@ResponseBody
 	public ResponseEntity<String> getAccount(@PathVariable String accountId) {
 		System.out.println("*** getAccount() called with accountId of: " + accountId + " ***");
-		AccountV2 accountV2 = accountRepository.getAccount(accountId);
-		return new ResponseEntity<>("getAccount(): " + accountV2.toString(), HttpStatus.OK);
+		AccountV3 accountV3 = accountRepository.getAccount(accountId);
+		return new ResponseEntity<>("getAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json", value = "/accounts")

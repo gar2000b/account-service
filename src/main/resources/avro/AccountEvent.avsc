@@ -28,6 +28,18 @@
 			{"name":"addr2","type": "string"}
 		]}],
     	"default": null
+	},
+	{"name":"v3","type":["null",
+		{"namespace": "com.onlineinteract.workflow.domain.account.v3","name":"AccountV3","type":"record","fields":[
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"},
+			{"name":"enabled","type": "boolean"},
+			{"name":"addr","type": "string"}
+		]}],
+    	"default": null
 	}
   ]
 }

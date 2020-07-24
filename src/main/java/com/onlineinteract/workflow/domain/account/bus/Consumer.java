@@ -79,9 +79,9 @@ public class Consumer {
 							"Consuming event from account-event-topic with id/key of: " + consumerRecord.key());
 					AccountEvent account = (AccountEvent) consumerRecord.value();
 					if (account.getEventType().toString().contains("AccountCreatedEvent"))
-						accountRepository.createAccount(account.getV2());
+						accountRepository.createAccount(account.getV3());
 					if (account.getEventType().toString().contains("AccountUpdatedEvent"))
-						accountRepository.updateAccount(account.getV2());
+						accountRepository.updateAccount(account.getV3());
 				}
 			}
 			shutdownConsumerProducer();

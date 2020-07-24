@@ -14,7 +14,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.onlineinteract.workflow.dbclient.DbClient;
-import com.onlineinteract.workflow.domain.account.v2.AccountV2;
+import com.onlineinteract.workflow.domain.account.v3.AccountV3;
 import com.onlineinteract.workflow.utility.JsonParser;
 import com.onlineinteract.workflow.utility.MongoUtility;
 
@@ -27,23 +27,23 @@ public class AccountRepository {
 	public AccountRepository() {
 	}
 
-	public void createAccount(AccountV2 account) {
+	public void createAccount(AccountV3 accountV3) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
-		Document accountDocument = Document.parse(account.toString());
+		Document accountDocument = Document.parse(accountV3.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
 		accountsCollection.insertOne(accountDocument);
 		System.out.println("Account Persisted to accounts collection");
 	}
 
-	public void updateAccount(AccountV2 account) {
+	public void updateAccount(AccountV3 accountV3) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
-		Document accountDocument = Document.parse(account.toString());
+		Document accountDocument = Document.parse(accountV3.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
-		accountsCollection.replaceOne(new Document("id", account.getId()), accountDocument);
+		accountsCollection.replaceOne(new Document("id", accountV3.getId()), accountDocument);
 		System.out.println("Account Updated in accounts collection");
 	}
 
-	public AccountV2 getAccount(String accountId) {
+	public AccountV3 getAccount(String accountId) {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
 		BasicDBObject query = new BasicDBObject();
@@ -52,7 +52,7 @@ public class AccountRepository {
 		for (Document accountDocument : accountDocuments) {
 			System.out.println("Found: " + accountDocument.toJson());
 			MongoUtility.removeMongoId(accountDocument);
-			return JsonParser.fromJson(accountDocument.toJson(), AccountV2.class);
+			return JsonParser.fromJson(accountDocument.toJson(), AccountV3.class);
 		}
 
 		return null;
@@ -73,7 +73,7 @@ public class AccountRepository {
 
 		return allAccounts;
 	}
-	
+
 	public void removeAllDocuments() {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
