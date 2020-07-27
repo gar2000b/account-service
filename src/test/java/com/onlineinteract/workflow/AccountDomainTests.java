@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.onlineinteract.workflow.domain.account.bus.DataFixEventGenerator;
+import com.onlineinteract.workflow.domain.account.repository.AccountRepository;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository1;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository2;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository3;
@@ -48,6 +49,9 @@ public class AccountDomainTests {
 	static int noOfAccounts = 0;
 
 	@Autowired
+	AccountRepository accountRepository;
+
+	@Autowired
 	AccountRepository1 accountRepository1;
 
 	@Autowired
@@ -69,12 +73,15 @@ public class AccountDomainTests {
 
 	@Test
 	public void applyV2ToV3DataFix() {
-		List<AccountV2> accountsV2 = accountRepository2.getAllAccountsAsList();
+		List<AccountV2> accountsV2 = accountRepository.getAllAccountsAsList();
 		for (AccountV2 accountV2 : accountsV2) {
+			if (accountV2.getAddr1() == null || accountV2.getAddr2() == null)
+				continue;
 			accountV2.setAddr1(accountV2.getAddr1() + " " + accountV2.getAddr2());
+			accountV2.setAddr2("");
 			try {
 				dataFixEventGenerator.updateAccount(accountV2);
-				accountRepository2.updateAccount(accountV2);
+				accountRepository.updateAccount(accountV2);
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

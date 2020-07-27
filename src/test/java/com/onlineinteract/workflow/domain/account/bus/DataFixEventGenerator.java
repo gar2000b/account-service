@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.onlineinteract.workflow.domain.account.AccountEvent;
 import com.onlineinteract.workflow.domain.account.v1.AccountV1;
 import com.onlineinteract.workflow.domain.account.v2.AccountV2;
 import com.onlineinteract.workflow.domain.account.v2.Clone;
 
+@Component
 public class DataFixEventGenerator {
 
 	@Autowired

@@ -1,7 +1,9 @@
 package com.onlineinteract.workflow.domain.account.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -14,6 +16,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.onlineinteract.workflow.dbclient.DbClient;
+import com.onlineinteract.workflow.domain.account.v2.AccountV2;
 import com.onlineinteract.workflow.domain.account.v3.AccountV3;
 import com.onlineinteract.workflow.utility.JsonParser;
 import com.onlineinteract.workflow.utility.MongoUtility;
@@ -39,7 +42,7 @@ public class AccountRepository {
 		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
 		Document accountDocument = Document.parse(accountV3.toString());
 		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
-		accountsCollection.replaceOne(new Document("id", accountV3.getId()), accountDocument);
+		accountsCollection.replaceOne(new Document("id", accountV3.getId().toString()), accountDocument);
 		System.out.println("Account Updated in accounts collection");
 	}
 
@@ -72,6 +75,41 @@ public class AccountRepository {
 				.collect(Collectors.joining(", ", "[", "]"));
 
 		return allAccounts;
+	}
+
+	public List<AccountV2> getAllAccountsAsList() {
+		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
+		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
+		FindIterable<Document> accountDocumentsIterable = accountsCollection.find();
+		List<AccountV2> accounts = new ArrayList<>();
+		for (Document accountDocument : accountDocumentsIterable) {
+			MongoUtility.removeMongoId(accountDocument);
+			accounts.add(JsonParser.fromJson(accountDocument.toJson(), AccountV2.class));
+		}
+
+		return accounts;
+	}
+
+	public Map<String, AccountV2> getAllAccountsAsMap() {
+		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
+		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
+		FindIterable<Document> accountDocumentsIterable = accountsCollection.find();
+		Map<String, AccountV2> accountsMap = new HashMap<>();
+		for (Document accountDocument : accountDocumentsIterable) {
+			MongoUtility.removeMongoId(accountDocument);
+			AccountV2 accountV2 = JsonParser.fromJson(accountDocument.toJson(), AccountV2.class);
+			accountsMap.put(accountV2.getId().toString(), accountV2);
+		}
+
+		return accountsMap;
+	}
+
+	public void updateAccount(AccountV2 accountV2) {
+		MongoDatabase database = dbClient.getMongoClient().getDatabase(DbClient.DATABASE);
+		Document accountDocument = Document.parse(accountV2.toString());
+		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
+		accountsCollection.replaceOne(new Document("id", accountV2.getId().toString()), accountDocument);
+		System.out.println("Account Updated in accounts collection");
 	}
 
 	public void removeAllDocuments() {
