@@ -39,6 +39,7 @@ public class AccountController {
 			accountRepository.createAccount(accountV2);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
+			return new ResponseEntity<>("createAccount(): " + accountV2.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("createAccount(): " + accountV2.toString(), HttpStatus.OK);
 	}
@@ -52,6 +53,7 @@ public class AccountController {
 			accountRepository.updateAccount(accountV2);
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
+			return new ResponseEntity<>("updateAccount(): " + accountV2.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("updateAccount(): " + accountV2.toString(), HttpStatus.OK);
 	}
