@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.rest;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,8 +34,12 @@ public class AccountController {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
 		accountV2.setId(accountId);
-		accountRepository.createAccount(accountV2);
-		eventGenerator.createAccount(accountV2);
+		try {
+			eventGenerator.createAccount(accountV2);
+			accountRepository.createAccount(accountV2);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>("createAccount(): " + accountV2.toString(), HttpStatus.OK);
 	}
 
@@ -42,8 +47,12 @@ public class AccountController {
 	@ResponseBody
 	public ResponseEntity<String> updateAccount(@RequestBody AccountV2 accountV2) {
 		System.out.println("*** updateAccount() called ***");
-		accountRepository.updateAccount(accountV2);
-		eventGenerator.updateAccount(accountV2);
+		try {
+			eventGenerator.updateAccount(accountV2);
+			accountRepository.updateAccount(accountV2);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>("updateAccount(): " + accountV2.toString(), HttpStatus.OK);
 	}
 

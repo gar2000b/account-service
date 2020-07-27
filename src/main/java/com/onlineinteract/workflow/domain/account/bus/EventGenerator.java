@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.domain.account.bus;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class EventGenerator {
 	@Autowired
 	private Producer producer;
 
-	public void createAccount(AccountV2 accountV2) {
+	public void createAccount(AccountV2 accountV2) throws InterruptedException, ExecutionException {
 		AccountEvent accountEvent = new AccountEvent();
 		accountEvent.setCreated(new Date().getTime());
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
@@ -31,7 +32,7 @@ public class EventGenerator {
 		System.out.println("AccountCreatedEvent Published to account-event-topic");
 	}
 
-	public void updateAccount(AccountV2 accountV2) {
+	public void updateAccount(AccountV2 accountV2) throws InterruptedException, ExecutionException {
 		AccountEvent accountEvent = new AccountEvent();
 		accountEvent.setCreated(new Date().getTime());
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));
