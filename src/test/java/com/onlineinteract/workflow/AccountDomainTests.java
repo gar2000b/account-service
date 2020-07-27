@@ -30,6 +30,7 @@ import com.onlineinteract.workflow.domain.account.repository.AccountRepository3;
 import com.onlineinteract.workflow.domain.account.v1.AccountV1;
 import com.onlineinteract.workflow.domain.account.v2.AccountV2;
 import com.onlineinteract.workflow.domain.account.v3.AccountV3;
+import com.onlineinteract.workflow.domain.account.v3.Clone;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -81,7 +82,8 @@ public class AccountDomainTests {
 			accountV2.setAddr2("");
 			try {
 				dataFixEventGenerator.updateAccount(accountV2);
-				accountRepository.updateAccount(accountV2);
+				AccountV3 accountV3 = Clone.cloneAccountV3FromV2(accountV2);
+				accountRepository.updateAccount(accountV3);
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}

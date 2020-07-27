@@ -19,6 +19,18 @@ public class Clone {
 		return accountV2;
 	}
 	
+	public static AccountV3 cloneAccountV3FromV2(AccountV2 accountV2) {
+		AccountV3 accountV3 = new AccountV3();
+		accountV3.setId(accountV2.getId());
+		accountV3.setName(accountV2.getName());
+		accountV3.setOpeningBalance(accountV2.getOpeningBalance());
+		accountV3.setSavingsRate(accountV2.getSavingsRate());
+		accountV3.setType(accountV2.getType());
+		accountV3.setEnabled(accountV2.getEnabled());
+		accountV3.setAddr(accountV2.getAddr1());
+		return accountV3;
+	}
+	
 	public static AccountV1 cloneAccountV1FromV3(AccountV3 accountV3) {
 		AccountV1 accountV1 = new AccountV1();
 		accountV1.setId(accountV3.getId());
