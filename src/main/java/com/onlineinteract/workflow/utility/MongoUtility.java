@@ -12,7 +12,7 @@ public class MongoUtility {
 	}
 
 	public static void removeMongoId(Document document) {
-		System.out.println("Removing _id");
+//		System.out.println("Removing _id");
 		document.remove("_id");
 	}
 }
