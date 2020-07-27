@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.onlineinteract.workflow.dbclient.DbClient;
 import com.onlineinteract.workflow.dbclient.DbClient2;
 import com.onlineinteract.workflow.domain.account.v2.AccountV2;
 import com.onlineinteract.workflow.utility.JsonParser;
@@ -51,5 +52,13 @@ public class AccountRepository2 {
 		}
 
 		return accountsMap;
+	}
+	
+	public void updateAccount(AccountV2 accountV2) {
+		MongoDatabase database = dbClient2.getMongoClient().getDatabase(DbClient.DATABASE);
+		Document accountDocument = Document.parse(accountV2.toString());
+		MongoCollection<Document> accountsCollection = database.getCollection("accounts");
+		accountsCollection.replaceOne(new Document("id", accountV2.getId()), accountDocument);
+		System.out.println("Account Updated in accounts collection");
 	}
 }

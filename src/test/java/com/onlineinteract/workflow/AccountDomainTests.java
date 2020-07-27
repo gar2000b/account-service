@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import com.onlineinteract.workflow.domain.account.bus.DataFixEventGenerator;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository1;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository2;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository3;
@@ -29,6 +31,7 @@ import com.onlineinteract.workflow.domain.account.v3.AccountV3;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Ignore
 public class AccountDomainTests {
 
 	static List<String> prefixes = Arrays.asList(new String[] { "Everyday", "Super Saver", "Mega Saver" });
@@ -52,11 +55,24 @@ public class AccountDomainTests {
 	@Autowired
 	AccountRepository3 accountRepository3;
 
+	@Autowired
+	DataFixEventGenerator dataFixEventGenerator;
+
 	public static void main(String[] args) throws InterruptedException {
 		AccountDomainTests accountDomainTests = new AccountDomainTests();
 		while (true) {
 			Thread.sleep(200);
 			accountDomainTests.createAccount(generateAccountJsonV3());
+		}
+	}
+
+	@Test
+	public void applyV2ToV3DataFix() {
+		List<AccountV2> accountsV2 = accountRepository2.getAllAccountsAsList();
+		for (AccountV2 accountV2 : accountsV2) {
+			accountV2.setAddr1(accountV2.getAddr1() + " " + accountV2.getAddr2());
+			accountRepository2.updateAccount(accountV2);
+			dataFixEventGenerator.updateAccount(accountV2);
 		}
 	}
 
