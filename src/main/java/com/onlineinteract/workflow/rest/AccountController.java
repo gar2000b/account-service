@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.rest;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.onlineinteract.workflow.domain.account.v1.AccountV1;
 import com.onlineinteract.workflow.domain.account.bus.EventGenerator;
 import com.onlineinteract.workflow.domain.account.repository.AccountRepository;
+import com.onlineinteract.workflow.domain.account.v1.AccountV1;
 
 @Controller
 @EnableAutoConfiguration
@@ -33,8 +34,13 @@ public class AccountController {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
 		accountV1.setId(accountId);
-		accountRepository.createAccount(accountV1);
-		eventGenerator.createAccount(accountV1);
+		try {
+			eventGenerator.createAccount(accountV1);
+			accountRepository.createAccount(accountV1);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("createAccount(): " + accountV1.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>("createAccount(): " + accountV1.toString(), HttpStatus.OK);
 	}
 
@@ -42,8 +48,13 @@ public class AccountController {
 	@ResponseBody
 	public ResponseEntity<String> updateAccount(@RequestBody AccountV1 accountV1) {
 		System.out.println("*** updateAccount() called ***");
-		accountRepository.updateAccount(accountV1);
-		eventGenerator.updateAccount(accountV1);
+		try {
+			eventGenerator.updateAccount(accountV1);
+			accountRepository.updateAccount(accountV1);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("updateAccount(): " + accountV1.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>("updateAccount(): " + accountV1.toString(), HttpStatus.OK);
 	}
 
