@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.domain.account.bus;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +15,7 @@ public class DataFixEventGenerator {
 	@Autowired
 	private Producer producer;
 
-	public void updateAccount(AccountV2 accountV2) {
+	public void updateAccount(AccountV2 accountV2) throws InterruptedException, ExecutionException {
 		AccountEvent accountEvent = new AccountEvent();
 		accountEvent.setCreated(new Date().getTime());
 		accountEvent.setEventId(String.valueOf(accountEvent.getCreated()));

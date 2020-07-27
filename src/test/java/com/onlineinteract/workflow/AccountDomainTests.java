@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.Ignore;
@@ -71,8 +72,12 @@ public class AccountDomainTests {
 		List<AccountV2> accountsV2 = accountRepository2.getAllAccountsAsList();
 		for (AccountV2 accountV2 : accountsV2) {
 			accountV2.setAddr1(accountV2.getAddr1() + " " + accountV2.getAddr2());
-			accountRepository2.updateAccount(accountV2);
-			dataFixEventGenerator.updateAccount(accountV2);
+			try {
+				dataFixEventGenerator.updateAccount(accountV2);
+				accountRepository2.updateAccount(accountV2);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

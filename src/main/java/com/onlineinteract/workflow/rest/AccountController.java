@@ -1,6 +1,7 @@
 package com.onlineinteract.workflow.rest;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,8 +34,13 @@ public class AccountController {
 		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
 		accountV3.setId(accountId);
-		accountRepository.createAccount(accountV3);
-		eventGenerator.createAccount(accountV3);
+		try {
+			eventGenerator.createAccount(accountV3);
+			accountRepository.createAccount(accountV3);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("createAccount(): " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>("createAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
 
@@ -42,8 +48,13 @@ public class AccountController {
 	@ResponseBody
 	public ResponseEntity<String> updateAccount(@RequestBody AccountV3 accountV3) {
 		System.out.println("*** updateAccount() called ***");
-		accountRepository.updateAccount(accountV3);
-		eventGenerator.updateAccount(accountV3);
+		try {
+			eventGenerator.updateAccount(accountV3);
+			accountRepository.updateAccount(accountV3);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("updateAccount(): " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		return new ResponseEntity<>("updateAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
 
