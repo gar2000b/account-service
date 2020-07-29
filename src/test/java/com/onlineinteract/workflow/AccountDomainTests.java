@@ -67,7 +67,7 @@ public class AccountDomainTests {
 	public static void main(String[] args) throws InterruptedException {
 		AccountDomainTests accountDomainTests = new AccountDomainTests();
 		while (true) {
-			Thread.sleep(200);
+//			Thread.sleep(5);
 			accountDomainTests.createAccount(generateAccountJsonV3());
 		}
 	}
@@ -95,6 +95,7 @@ public class AccountDomainTests {
 		List<AccountV1> accountsV1 = accountRepository1.getAllAccountsAsList();
 		Map<String, AccountV2> accountsV2 = accountRepository2.getAllAccountsAsMap();
 
+		assertEquals(accountsV1.size(), accountsV2.size());
 		for (AccountV1 accountV1 : accountsV1) {
 			AccountV2 accountV2 = accountsV2.get(accountV1.getId());
 			assertEquals(accountV1.getName(), accountV2.getName());
@@ -109,6 +110,7 @@ public class AccountDomainTests {
 		List<AccountV2> accountsV2 = accountRepository2.getAllAccountsAsList();
 		Map<String, AccountV3> accountsV3 = accountRepository3.getAllAccountsAsMap();
 
+		assertEquals(accountsV2.size(), accountsV3.size());
 		for (AccountV2 accountV2 : accountsV2) {
 			AccountV3 accountV3 = accountsV3.get(accountV2.getId());
 			assertEquals(accountV2.getName(), accountV3.getName());
