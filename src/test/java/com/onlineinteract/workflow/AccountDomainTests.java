@@ -34,7 +34,7 @@ import com.onlineinteract.workflow.domain.account.v3.Clone;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Ignore
+//@Ignore
 public class AccountDomainTests {
 
 	static List<String> prefixes = Arrays.asList(new String[] { "Everyday", "Super Saver", "Mega Saver" });
@@ -47,7 +47,7 @@ public class AccountDomainTests {
 	static List<String> savingsRates = Arrays.asList(new String[] { "2.73%", "5.63%", "5.93%", "6.93%" });
 	static List<String> accounts = new ArrayList<>();
 
-	static int noOfAccounts = 0;
+	static int noOfAccounts = 2069;
 
 	@Autowired
 	AccountRepository accountRepository;
@@ -73,6 +73,7 @@ public class AccountDomainTests {
 	}
 
 	@Test
+	@Ignore
 	public void applyV2ToV3DataFix() {
 		List<AccountV2> accountsV2 = accountRepository.getAllAccountsAsList();
 		for (AccountV2 accountV2 : accountsV2) {
