@@ -95,14 +95,14 @@ public class Consumer {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		ResponseEntity<String[]> schemaVersionsResponse = restTemplate.getForEntity(
-				"http://colossal.canadacentral.cloudapp.azure.com:8081/subjects/" + ACCOUNT_EVENT_TOPIC + "-value/versions",
+				"http://localhost:8081/subjects/" + ACCOUNT_EVENT_TOPIC + "-value/versions",
 				String[].class, headers);
 		String[] schemaVersions = schemaVersionsResponse.getBody();
 
 		for (String schemaVersion : schemaVersions) {
 			System.out.println("schema version fetched: " + schemaVersion);
 			ResponseEntity<HashMap> schemaResponse = restTemplate
-					.getForEntity("http://colossal.canadacentral.cloudapp.azure.com:8081/subjects/" + ACCOUNT_EVENT_TOPIC
+					.getForEntity("http://localhost:8081/subjects/" + ACCOUNT_EVENT_TOPIC
 							+ "-value/versions/" + schemaVersion, HashMap.class, headers);
 			HashMap<String, String> schema = schemaResponse.getBody();
 
@@ -158,13 +158,13 @@ public class Consumer {
 
 	private Properties buildConsumerProperties() {
 		Properties properties = new Properties();
-		properties.put("bootstrap.servers", "colossal.canadacentral.cloudapp.azure.com:29092,colossal.canadacentral.cloudapp.azure.com:39092,colossal.canadacentral.cloudapp.azure.com:49092");
+		properties.put("bootstrap.servers", "localhost:29092,localhost:39092,localhost:49092");
 		properties.put("group.id", "account-event-topic-group2");
 		properties.put("enable.auto.commit", "false");
 		properties.put("max.poll.records", "200");
 		properties.put("key.deserializer", StringDeserializer.class);
 		properties.put("value.deserializer", KafkaAvroDeserializer.class);
-		properties.put("schema.registry.url", "http://colossal.canadacentral.cloudapp.azure.com:8081");
+		properties.put("schema.registry.url", "http://localhost:8081");
 		properties.put("specific.avro.reader", "true");
 		return properties;
 	}

@@ -8,12 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,7 +39,7 @@ import com.onlineinteract.workflow.domain.account.v3.Clone;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Ignore
+@Ignore
 public class AccountDomainTests {
 
 	static List<String> prefixes = Arrays.asList(new String[] { "Everyday", "Super Saver", "Mega Saver" });
@@ -47,7 +52,11 @@ public class AccountDomainTests {
 	static List<String> savingsRates = Arrays.asList(new String[] { "2.73%", "5.63%", "5.93%", "6.93%" });
 	static List<String> accounts = new ArrayList<>();
 
-	static int noOfAccounts = 2069;
+	static int count;
+	static long end;
+	static long start;
+	static long diff;
+	static long tps;
 
 	@Autowired
 	AccountRepository accountRepository;
@@ -64,18 +73,37 @@ public class AccountDomainTests {
 	@Autowired
 	DataFixEventGenerator dataFixEventGenerator;
 
+	static final int NO_OF_THREADS = 25;
+	static int noOfAccounts = 1103968;
+
 	public static void main(String[] args) throws InterruptedException {
+		LoggingSystem.get(ClassLoader.getSystemClassLoader()).setLogLevel(Logger.ROOT_LOGGER_NAME, LogLevel.OFF);
 		AccountDomainTests accountDomainTests = new AccountDomainTests();
-		while (true) {
-//			Thread.sleep(5);
-			accountDomainTests.createAccount(generateAccountJsonV3());
+		ExecutorService executor = Executors.newFixedThreadPool(NO_OF_THREADS);
+		count = 0;
+		start = System.currentTimeMillis();
+		end = System.currentTimeMillis();
+		for (int i = 0; i < NO_OF_THREADS; i++) {
+			executor.submit(new Thread(() -> {
+				while (true) {
+					accountDomainTests.createAccount(generateAccountJsonV3());
+					count++;
+					if (count % 1000 == 0) {
+						end = System.currentTimeMillis();
+						diff = end - start;
+						start = end;
+						tps = (long) (1000 / (diff / 1000d));
+						System.out.println("Time every 1000 records: " + diff + "ms with a tps: " + tps);
+					}
+				}
+			}));
 		}
 	}
 
 	@Test
 	@Ignore
 	public void applyV2ToV3DataFix() {
-		List<AccountV2> accountsV2 = accountRepository.getAllAccountsAsList();
+		List<AccountV2> accountsV2 = accountRepository.getAllV2AccountsAsList();
 		for (AccountV2 accountV2 : accountsV2) {
 			if (accountV2.getAddr1() == null || accountV2.getAddr2() == null)
 				continue;
@@ -92,33 +120,51 @@ public class AccountDomainTests {
 	}
 
 	@Test
-	public void reconciliationTestV1AgainstV2() {
-		List<AccountV1> accountsV1 = accountRepository1.getAllAccountsAsList();
-		Map<String, AccountV2> accountsV2 = accountRepository2.getAllAccountsAsMap();
+	public void reconciliationTestSourceAgainstV1() {
+		List<AccountV3> accountsSource = accountRepository.getAllV3AccountsAsList();
+		Map<String, AccountV1> accountsV1 = accountRepository1.getAllAccountsAsMap();
 
-		assertEquals(accountsV1.size(), accountsV2.size());
-		for (AccountV1 accountV1 : accountsV1) {
-			AccountV2 accountV2 = accountsV2.get(accountV1.getId());
-			assertEquals(accountV1.getName(), accountV2.getName());
-			assertEquals(accountV1.getType(), accountV2.getType());
-			assertEquals(accountV1.getOpeningBalance(), accountV2.getOpeningBalance());
-			assertEquals(accountV1.getSavingsRate(), accountV2.getSavingsRate());
+		assertEquals(accountsSource.size(), accountsV1.size());
+		for (AccountV3 accountSource : accountsSource) {
+			AccountV1 accountV1 = accountsV1.get(accountSource.getId());
+			assertEquals(accountSource.getName(), accountV1.getName());
+			assertEquals(accountSource.getType(), accountV1.getType());
+			assertEquals(accountSource.getOpeningBalance(), accountV1.getOpeningBalance());
+			assertEquals(accountSource.getSavingsRate(), accountV1.getSavingsRate());
 		}
 	}
 
 	@Test
-	public void reconciliationTestV2AgainstV3() {
-		List<AccountV2> accountsV2 = accountRepository2.getAllAccountsAsList();
+	public void reconciliationTestSourceAgainstV2() {
+		List<AccountV3> accountsSource = accountRepository.getAllV3AccountsAsList();
+		Map<String, AccountV2> accountsV2 = accountRepository2.getAllAccountsAsMap();
+
+		assertEquals(accountsSource.size(), accountsV2.size());
+		for (AccountV3 accountSource : accountsSource) {
+			AccountV2 accountV2 = accountsV2.get(accountSource.getId());
+			assertEquals(accountSource.getName(), accountV2.getName());
+			assertEquals(accountSource.getType(), accountV2.getType());
+			assertEquals(accountSource.getOpeningBalance(), accountV2.getOpeningBalance());
+			assertEquals(accountSource.getSavingsRate(), accountV2.getSavingsRate());
+			assertEquals(accountSource.getEnabled(), accountV2.getEnabled());
+			assertEquals(accountSource.getAddr(), accountV2.getAddr1());
+		}
+	}
+
+	@Test
+	public void reconciliationTestSourceAgainstV3() {
+		List<AccountV3> accountsSource = accountRepository.getAllV3AccountsAsList();
 		Map<String, AccountV3> accountsV3 = accountRepository3.getAllAccountsAsMap();
 
-		assertEquals(accountsV2.size(), accountsV3.size());
-		for (AccountV2 accountV2 : accountsV2) {
-			AccountV3 accountV3 = accountsV3.get(accountV2.getId());
-			assertEquals(accountV2.getName(), accountV3.getName());
-			assertEquals(accountV2.getType(), accountV3.getType());
-			assertEquals(accountV2.getOpeningBalance(), accountV3.getOpeningBalance());
-			assertEquals(accountV2.getSavingsRate(), accountV3.getSavingsRate());
-			assertEquals(accountV2.getEnabled(), accountV3.getEnabled());
+		assertEquals(accountsSource.size(), accountsV3.size());
+		for (AccountV3 accountSource : accountsSource) {
+			AccountV3 accountV3 = accountsV3.get(accountSource.getId());
+			assertEquals(accountSource.getName(), accountV3.getName());
+			assertEquals(accountSource.getType(), accountV3.getType());
+			assertEquals(accountSource.getOpeningBalance(), accountV3.getOpeningBalance());
+			assertEquals(accountSource.getSavingsRate(), accountV3.getSavingsRate());
+			assertEquals(accountSource.getEnabled(), accountV3.getEnabled());
+			assertEquals(accountSource.getAddr(), accountV3.getAddr());
 		}
 	}
 
@@ -129,7 +175,7 @@ public class AccountDomainTests {
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> request = new HttpEntity<String>(accountJson, headers);
 		ResponseEntity<String> response = restTemplate.postForEntity(accountServiceUrl, request, String.class);
-		System.out.println("Response from Account Service: " + response.getBody());
+		// System.out.println("Response from Account Service: " + response.getBody());
 	}
 
 	private static String generateAccountJsonV3() {

@@ -31,7 +31,7 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
 	public ResponseEntity<String> createAccount(@RequestBody AccountV3 accountV3) {
-		System.out.println("*** createAccount() called ***");
+//		System.out.println("*** createAccount() called ***");
 		String accountId = UUID.randomUUID().toString();
 		accountV3.setId(accountId);
 		try {

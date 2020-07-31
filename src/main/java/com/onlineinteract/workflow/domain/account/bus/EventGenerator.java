@@ -32,7 +32,7 @@ public class EventGenerator {
 		accountEvent.setV1(accountV1);
 
 		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV3().getId().toString());
-		System.out.println("AccountCreatedEvent Published to account-event-topic");
+//		System.out.println("AccountCreatedEvent Published to account-event-topic");
 	}
 
 	public void updateAccount(AccountV3 accountV3) throws InterruptedException, ExecutionException {
@@ -49,6 +49,6 @@ public class EventGenerator {
 		accountEvent.setV1(accountV1);
 
 		producer.publishRecord("account-event-topic", accountEvent, accountEvent.getV3().getId().toString());
-		System.out.println("AccountUpdatedEvent Published to account-event-topic");
+//		System.out.println("AccountUpdatedEvent Published to account-event-topic");
 	}
 }

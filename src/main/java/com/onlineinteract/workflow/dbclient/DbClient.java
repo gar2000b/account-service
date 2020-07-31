@@ -20,7 +20,7 @@ public class DbClient {
 
 	public DbClient() {
 		System.out.println("Initializing MongoDB Client");
-		String host = "colossal.canadacentral.cloudapp.azure.com";
+		String host = "localhost";
 		int port = 27017;
 		String user = "accounts";
 		String pwd = "password";
@@ -30,7 +30,7 @@ public class DbClient {
 
 		MongoClientOptions mongoClientOptions = new MongoClientOptions.Builder().heartbeatConnectTimeout(20000)
 				.heartbeatFrequency(10000).heartbeatSocketTimeout(20000).connectTimeout(20000).socketTimeout(20000)
-				.maxConnectionIdleTime(10000).build();
+				.maxConnectionIdleTime(100000).build();
 		mongoClient = new MongoClient(address, credential, mongoClientOptions);
 	}
 
