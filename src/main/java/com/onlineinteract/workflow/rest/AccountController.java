@@ -37,9 +37,10 @@ public class AccountController {
 		try {
 			eventGenerator.createAccount(accountV3);
 			accountRepository.createAccount(accountV3);
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("createAccount(): " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (InterruptedException | ExecutionException | Error e) {
+			System.out.println("There was a problem creating the account");
+			System.out.println("Returning 500");
+			return new ResponseEntity<>("createAccount() failed: " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("createAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
@@ -47,13 +48,14 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json", produces = "application/json", value = "/account")
 	@ResponseBody
 	public ResponseEntity<String> updateAccount(@RequestBody AccountV3 accountV3) {
-		System.out.println("*** updateAccount() called ***");
+//		System.out.println("*** updateAccount() called ***");
 		try {
 			eventGenerator.updateAccount(accountV3);
 			accountRepository.updateAccount(accountV3);
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("updateAccount(): " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (InterruptedException | ExecutionException | Error e) {
+			System.out.println("There was a problem updating the account");
+			System.out.println("Returning 500");
+			return new ResponseEntity<>("updateAccount() failed: " + accountV3.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>("updateAccount(): " + accountV3.toString(), HttpStatus.OK);
 	}
