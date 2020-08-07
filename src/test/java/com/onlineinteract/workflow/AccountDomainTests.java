@@ -60,6 +60,7 @@ public class AccountDomainTests {
 	static volatile int noOfAccounts = 0;
 	static volatile int createsCount = 0;
 	static volatile int updatesCount = 0;
+	static volatile int position = 1;
 	static volatile long end;
 	static volatile long start;
 	static volatile long diff;
@@ -80,8 +81,8 @@ public class AccountDomainTests {
 	@Autowired
 	DataFixEventGenerator dataFixEventGenerator;
 
-	static final int NO_OF_THREADS = 2;
-	static int totalNoOfTransactions = 250000;
+	static final int NO_OF_THREADS = 25;
+	static int totalNoOfTransactions = 50000;
 	private Map<String, AccountV3> accountsCreated = new HashMap<>();
 	List<String> accountsCreatedKeyList = new ArrayList<String>();
 	private Map<String, Long> accountsCreatedTime = new HashMap<>();
@@ -95,17 +96,22 @@ public class AccountDomainTests {
 		count = 0;
 		start = System.currentTimeMillis();
 		end = System.currentTimeMillis();
+
 		for (int i = 0; i < NO_OF_THREADS; i++) {
 			executor.submit(new Thread(() -> {
 				while (count < totalNoOfTransactions) {
-					accountDomainTests.randomCommand();
-					count++;
-					if (count % 1000 == 0) {
-						end = System.currentTimeMillis();
-						diff = end - start;
-						start = end;
-						tps = (long) (1000 / (diff / 1000d));
-						System.out.println("Time every 1000 records: " + diff + "ms with a tps: " + tps);
+					try {
+						accountDomainTests.randomCommand();
+						count++;
+						if (count % 1000 == 0) {
+							end = System.currentTimeMillis();
+							diff = end - start;
+							start = end;
+							tps = (long) (1000 / (diff / 1000d));
+							System.out.println("Time every 1000 records: " + diff + "ms with a tps: " + tps);
+						}
+					} catch (Error e) {
+						System.out.println("Thread caught an exception");
 					}
 				}
 			}));
@@ -208,50 +214,80 @@ public class AccountDomainTests {
 	}
 
 	private void updateRandomAccount() {
-		int accountsCreatedIndex = ThreadLocalRandom.current().nextInt(0, accountsCreatedKeyList.size());
-		AccountV3 accountV3 = accountsCreated.get(accountsCreatedKeyList.get(accountsCreatedIndex));
-		Long timeAccountV3Created = accountsCreatedTime.get(accountsCreatedKeyList.get(accountsCreatedIndex));
-		Long timeAccountV3Updated = accountsUpdatedTime.get(accountsCreatedKeyList.get(accountsCreatedIndex));
+		ThreadLocal<Integer> accountsIndex = ThreadLocal.withInitial(() -> fetchNextAccountIndex());
+		ThreadLocal<AccountV3> accountV3 = ThreadLocal
+				.withInitial(() -> accountsCreated.get(accountsCreatedKeyList.get(accountsIndex.get())));
+		ThreadLocal<Long> timeAccountV3Created = ThreadLocal
+				.withInitial(() -> accountsCreatedTime.get(accountsCreatedKeyList.get(accountsIndex.get())));
+		ThreadLocal<Long> timeAccountV3Updated = ThreadLocal
+				.withInitial(() -> accountsUpdatedTime.get(accountsCreatedKeyList.get(accountsIndex.get())));
 
-		if (timeAccountV3Updated == null)
-			timeAccountV3Updated = 0L;
+		if (timeAccountV3Updated.get() == null)
+			timeAccountV3Updated.set(0L);
 
-		Long diffCreated = System.currentTimeMillis() - timeAccountV3Created;
-		Long diffUpdated = System.currentTimeMillis() - timeAccountV3Updated;
-		if (diffCreated < 2000 || diffUpdated < 2000) {
-//			System.out.println("Account created less than a second ago, => no update requested. Diff = " + diff
-//					+ " - Count: " + count);
+		ThreadLocal<Long> diffCreated = ThreadLocal
+				.withInitial(() -> System.currentTimeMillis() - timeAccountV3Created.get());
+		ThreadLocal<Long> diffUpdated = ThreadLocal
+				.withInitial(() -> System.currentTimeMillis() - timeAccountV3Updated.get());
+		
+		if (diffCreated.get() < 2000 || diffUpdated.get() < 2000) {
 			count--;
 			try {
-				Thread.sleep(50);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			return;
 		}
 
-		String openingBalance = "$" + ThreadLocalRandom.current().nextInt(400, 1001);
-		accountV3.setOpeningBalance(openingBalance);
-		String accountJson = accountV3ToJson(accountV3);
+		accountV3.get().setOpeningBalance("$" + ThreadLocalRandom.current().nextInt(400, 1001));
+		ThreadLocal<String> accountJson = ThreadLocal.withInitial(() -> accountV3ToJson(accountV3.get()));
 
 		String accountServiceUrl = "http://colossal.canadacentral.cloudapp.azure.com:9087/account";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<String>(accountJson, headers);
-		restTemplate.put(accountServiceUrl, request);
-		ResponseEntity<String> response = restTemplate.exchange(accountServiceUrl, HttpMethod.PUT, request,
+		ThreadLocal<HttpEntity<String>> request = ThreadLocal
+				.withInitial(() -> new HttpEntity<String>(accountJson.get(), headers));
+		ResponseEntity<String> response = restTemplate.exchange(accountServiceUrl, HttpMethod.PUT, request.get(),
 				String.class);
 
 		if (response.getStatusCode().value() == 200) {
-			accountsUpdatedTime.put(accountV3.getId().toString(), System.currentTimeMillis());
+			accountsUpdatedTime.put(accountV3.get().getId().toString(), System.currentTimeMillis());
 			updatesCount++;
 		} else {
 			System.out.println("Response back: " + response.getStatusCode().value());
 		}
 	}
 
-	private String accountV3ToJson(AccountV3 accountV3) {
+	private synchronized int fetchNextAccountIndex() {
+		int accountsIndex = 0;
+		try {
+			if (position == 1)
+				accountsIndex = ThreadLocalRandom.current().nextInt(0, (accountsCreatedKeyList.size() / 4));
+			if (position == 2)
+				accountsIndex = ThreadLocalRandom.current().nextInt((accountsCreatedKeyList.size() / 4),
+						(accountsCreatedKeyList.size() / 2));
+			if (position == 3)
+				accountsIndex = ThreadLocalRandom.current().nextInt((accountsCreatedKeyList.size() / 2),
+						(int) (accountsCreatedKeyList.size() * 0.75));
+			if (position == 4)
+				accountsIndex = ThreadLocalRandom.current().nextInt((int) (accountsCreatedKeyList.size() * 0.75),
+						accountsCreatedKeyList.size());
+		} catch (Error e) {
+			System.out.println("Error, accountsCreatedKeyList.size(): " + accountsCreatedKeyList.size()
+					+ " - position: " + position);
+		}
+
+		if (position == 4)
+			position = 1;
+		else
+			position++;
+
+		return accountsIndex;
+	}
+
+	private synchronized String accountV3ToJson(AccountV3 accountV3) {
 		String accountV3Json = "{\"id\": \"" + accountV3.getId() + "\", \"name\": \"" + accountV3.getName()
 				+ "\", \"type\": \"" + accountV3.getSavingsRate() + "\", \"openingBalance\": \""
 				+ accountV3.getOpeningBalance() + "\", \"savingsRate\": \"" + accountV3.getSavingsRate()
@@ -269,7 +305,6 @@ public class AccountDomainTests {
 
 		if (response.getStatusCode().value() == 200) {
 			String accountV3Response = response.getBody().replace("createAccount(): ", "");
-//			System.out.println(accountV3Response);
 			AccountV3 accountV3 = JsonParser.fromJson(accountV3Response, AccountV3.class);
 			accountsCreated.put(accountV3.getId().toString(), accountV3);
 			accountsCreatedTime.put(accountV3.getId().toString(), System.currentTimeMillis());
