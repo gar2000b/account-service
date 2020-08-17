@@ -90,8 +90,12 @@ public class AccountDomainTests {
 
 	public static void main(String[] args) throws InterruptedException {
 		LoggingSystem.get(ClassLoader.getSystemClassLoader()).setLogLevel(Logger.ROOT_LOGGER_NAME, LogLevel.OFF);
-		System.out.println("Injecting load");
 		AccountDomainTests accountDomainTests = new AccountDomainTests();
+		accountDomainTests.injectLoad();
+	}
+	
+	private void injectLoad() throws InterruptedException {
+		System.out.println("Injecting load");
 		ExecutorService executor = Executors.newFixedThreadPool(NO_OF_THREADS);
 		count = 0;
 		start = System.currentTimeMillis();
@@ -101,7 +105,7 @@ public class AccountDomainTests {
 			executor.submit(new Thread(() -> {
 				while (count < totalNoOfTransactions) {
 					try {
-						accountDomainTests.randomCommand();
+						randomCommand();
 						count++;
 						if (count % 1000 == 0) {
 							end = System.currentTimeMillis();
@@ -196,6 +200,11 @@ public class AccountDomainTests {
 		assertEquals(accountsSource.size(), accountsV3.size());
 		for (AccountV3 accountSource : accountsSource) {
 			AccountV3 accountV3 = accountsV3.get(accountSource.getId());
+//			if (!accountSource.getOpeningBalance().equals(accountV3.getOpeningBalance())) {
+//				System.out.println(
+//						"Opening Balance is not equal - expected: " + accountSource.getOpeningBalance() + " - was: "
+//								+ accountV3.getOpeningBalance() + " - count: " + count + " - id: " + accountV3.getId());
+//			}
 			assertEquals(accountSource.getName(), accountV3.getName());
 			assertEquals(accountSource.getType(), accountV3.getType());
 			assertEquals(accountSource.getOpeningBalance(), accountV3.getOpeningBalance());
