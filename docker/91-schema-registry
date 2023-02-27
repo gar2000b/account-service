@@ -1,0 +1,22 @@
+Schema Registry APIs:
+
+http://colossal.canadacentral.cloudapp.azure.com:8081/
+http://colossal.canadacentral.cloudapp.azure.com:8081/subjects/
+http://colossal.canadacentral.cloudapp.azure.com:8081/subjects/test-topic-value/versions
+http://colossal.canadacentral.cloudapp.azure.com:8081/subjects/test-topic-value/versions/latest
+http://colossal.canadacentral.cloudapp.azure.com:8081/schemas/ids/81
+http://colossal.canadacentral.cloudapp.azure.com:8081/config
+
+curl -X PUT -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+  --data '{"compatibility": "FULL_TRANSITIVE"}' \
+  http://colossal.canadacentral.cloudapp.azure.com:8081/config
+  
+curl -X PUT -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+  --data '{"compatibility": "NONE"}' \
+  http://colossal.canadacentral.cloudapp.azure.com:8081/config
+
+
+
+BACKWARD compatibility means that consumers using the new schema can read data produced with the last schema. For example, if there are three schemas for a subject that change in order X-2, X-1, and X then BACKWARD compatibility ensures that consumers using the new schema X can process data written by producers using schema X or X-1, but not necessarily X-2. If the consumer using the new schema needs to be able to process data written by all registered schemas, not just the last two schemas, then use BACKWARD_TRANSITIVE instead of BACKWARD. For example, if there are three schemas for a subject that change in order X-2, X-1, and X then BACKWARD_TRANSITIVE compatibility ensures that consumers using the new schema X can process data written by producers using schema X, X-1, or X-2.
+
+FORWARD compatibility means that data produced with a new schema can be read by consumers using the last schema, even though they may not be able to use the full capabilities of the new schema. For example, if there are three schemas for a subject that change in order X-2, X-1, and X then FORWARD compatibility ensures that data written by producers using the new schema X can be processed by consumers using schema X or X-1, but not necessarily X-2. If data produced with a new schema needs to be read by consumers using all registered schemas, not just the last two schemas, then use FORWARD_TRANSITIVE instead of FORWARD. For example, if there are three schemas for a subject that change in order X-2, X-1, and X then FORWARD_TRANSITIVE compatibility ensures that data written by producers using the new schema X can be processed by consumers using schema X, X-1, or X-2.

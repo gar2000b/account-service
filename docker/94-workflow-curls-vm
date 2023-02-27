@@ -1,0 +1,97 @@
+CustomerService
+---------------
+
+Get all customers:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9082/es/customers
+
+Get customer:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer/f3d18d64-6768-49b3-97e8-de8dc6f59096
+
+Create customer:
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"",   "forename":"Jennifer", "surname":"Hagen", "dob":"01/01/1980", "address1":"12 Elf   Avenue", "address2":"", "city":"Laplando", "postcode":"X1M2A5",   "sin":"9876543210", "references":[{"forename":"Daniel", "surname":"Lester",   "telephoneNumber":"416-123-4567", "sin":"8765432109"},{"forename":"Linda",   "surname":"Hamilton", "telephoneNumber":"416-123-4563", "sin":"6543210978"}],   "assets":[{"name":"House", "value":"$400,000"},{"name":"Vehicle",   "value":"$35,000"}]}' http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer
+
+Update customer:
+curl -i -H "Content-Type:application/json" -X PUT --data '{"id":"03f9e9bf-9b85-40ab-83d8-e4f0fbf06d83",   "forename":"Jennifer", "surname":"McShane", "dob":"01/01/1980", "address1":"12 Elf   Avenue", "address2":"", "city":"Laplando", "postcode":"X1M2A5",   "sin":"9876543210", "references":[{"forename":"Daniel", "surname":"Lester",   "telephoneNumber":"416-123-4567", "sin":"8765432109"},{"forename":"Linda",   "surname":"Hamilton", "telephoneNumber":"416-123-4563", "sin":"6543210978"}],   "assets":[{"name":"House", "value":"$400,000"},{"name":"Vehicle",   "value":"$55,000"}]}' http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer
+
+curl -i -H "Content-Type:application/json" -X PUT --data '{"id":"8aa130ee-657e-4437-ae74-8bb968de7c77",   "forename":"Anna", "surname":"Kane", "dob":"02/02/1982", "address1":"Elis Street", "address2":"", "city":"Eccles", "postcode":"X1M2A6",   "sin":"3746543210", "references":[{"forename":"Michael", "surname":"Lester",   "telephoneNumber":"416-123-4567", "sin":"8765432109"},{"forename":"Linda",   "surname":"Hamilton", "telephoneNumber":"416-123-4563", "sin":"6543210978"}],   "assets":[{"name":"House", "value":"$400,000"},{"name":"Vehicle",   "value":"$55,000"}]}' http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer
+
+Get all assets:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer/f3d18d64-6768-49b3-97e8-de8dc6f59096/assets
+
+Get asset by name:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9082/es/customer/f3d18d64-6768-49b3-97e8-de8dc6f59096/asset/Vehicle
+
+Process Application:
+curl -i -H "Content-Type:application/json" -X POST --data '{"CustomerId":"f3d18d64-6768-49b3-97e8-de8dc6f59096","Location":"Toronto","AmountRequested":"1000.00","Denomination":"CAD","LoanPeriod":"2 Years"}' http://colossal.canadacentral.cloudapp.azure.com:9080/application
+
+μ
+
+AccountService
+--------------
+
+Create account v1:
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Everyday on the Go", "type":"chequing", "openingBalance":"$500", "savingsRate":"2.7%"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Super Saver", "type":"saving", "openingBalance":"$800", "savingsRate":"5.6%"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Online Saver", "type":"saving", "openingBalance":"$300", "savingsRate":"5.9%"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Mega Saver", "type":"saving", "openingBalance":"$400", "savingsRate":"6.9%"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+
+Create account v2:
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Everyday on the Go v2", "type":"chequing", "openingBalance":"$501", "savingsRate":"2.71%", "enabled":true, "addr1":"abc", "addr2":"def"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Super Saver v2", "type":"saving", "openingBalance":"$801", "savingsRate":"5.61%", "enabled":true, "addr1":"ghi", "addr2":"klm"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Online Saver v2", "type":"saving", "openingBalance":"$301", "savingsRate":"5.91%", "enabled":true, "addr1":"nop", "addr2":"qrs"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Mega Saver v2", "type":"saving", "openingBalance":"$401", "savingsRate":"6.91%", "enabled":true, "addr1":"tuv", "addr2":"wxy"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+
+Create account v3:
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Everyday on the Go v3", "type":"chequing", "openingBalance":"$503", "savingsRate":"2.73%", "enabled":true, "addr":"addr3"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Super Saver v3", "type":"saving", "openingBalance":"$803", "savingsRate":"5.63%", "enabled":true, "addr":"addr33"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Online Saver v3", "type":"saving", "openingBalance":"$303", "savingsRate":"5.93%", "enabled":true, "addr":"addr333"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+curl -i -H "Content-Type:application/json" -X POST --data '{"id":"", "name":"Mega Saver v3", "type":"saving", "openingBalance":"$403", "savingsRate":"6.93%", "enabled":true, "addr":"addr3333"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+
+Update account:
+curl -i -H "Content-Type:application/json" -X PUT --data '{"id":"71258c76-93b3-4c5b-bc3c-32876dc0ff5c", "name":"Everyday on the Go", "type":"chequing", "openingBalance":"$600", "savingsRate":"2.9%"}' http://colossal.canadacentral.cloudapp.azure.com:9087/account
+
+Get account:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9087/account/b002ac74-d400-46be-a464-a260b5caee03
+
+Get all accounts:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9087/accounts
+
+CustomerAccountService
+----------------------
+
+Create customer account:
+curl -i -H "Content-Type:application/json" -X POST http://colossal.canadacentral.cloudapp.azure.com:9088/customer-account/account/3a90e516-3e8a-437d-b3ca-10e4a2e3f328/customer/03f9e9bf-9b85-40ab-83d8-e4f0fbf06d83
+
+Update customer account:
+curl -i -H "Content-Type:application/json" -X PUT http://colossal.canadacentral.cloudapp.azure.com:9088/customer-account/##/account/##/customer/##
+
+Get customer account:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9088/customer-account/096d2f74-2dd5-48fc-9763-777f50458619
+
+Get all customer accounts:
+curl -i http://colossal.canadacentral.cloudapp.azure.com:9088/customer-accounts
+
+SnapshotService
+---------------
+
+Load Snapshot Info:
+curl -i -H "Content-Type:application/json" -X POST --data '{"_id":"1", "name":"SnapshotInfo", "domains":{"accounts":{"collection":"accounts","topic":"account-event-topic","cron":"cron-expression","versions":[{"version":1,"beginSnapshotOffset":0,"endSnapshotOffset":103523}]}}}
+' http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot-info
+
+curl -i -H "Content-Type:application/json" -X PUT --data '{"_id":"1", "name":"SnapshotInfo", "domains":{"accounts":{"collection":"accounts","topic":"account-event-topic","cron":"cron-expression","versions":[{"version":1,"beginSnapshotOffset":0,"endSnapshotOffset":107523}]}}}
+' http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot-info
+
+curl -i -H "Content-Type:application/json" -X POST http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot/domain/accounts/version/1
+
+curl -i -H "Content-Type:application/json" -X POST http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot/domain/accounts/version/2
+
+curl -i -H "Content-Type:application/json" -X POST http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot/domain/accounts/version/3
+
+curl -i -H "Content-Type:application/json" -X POST --data '{"_id":"1", "name":"SnapshotInfo", "domains":{"accounts" : {"collection" : "accounts","topic" : "account-event-topic","cron" : null,"versions" : []}}}' http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot-info
+
+curl -i -H "Content-Type:application/json" -X PUT --data '{"_id":"1", "name":"SnapshotInfo", "domains":{"accounts" : {"collection" : "accounts","topic" : "account-event-topic","cron" : null,"versions" : []}}}' http://colossal.canadacentral.cloudapp.azure.com:9089/snapshot-info
+
+
+
+
+

@@ -1,0 +1,123 @@
+{"namespace": "com.onlineinteract.workflow.domain.account.v1",
+ "type": "record",
+ "name":"Account",
+ "fields": [
+	{"name":"eventId","type": "string"},
+	{"name":"created","type": "int"},
+	{"name":"eventType","type": "string"},
+	{"name":"id","type": "string"},
+	{"name":"name","type": "string"},
+	{"name":"type","type": "string"},
+	{"name":"openingBalance","type": "string"},
+	{"name":"savingsRate","type": "string"}
+  ]
+}
+
+
+
+
+{"namespace": "com.onlineinteract.workflow.domain.account.v1",
+ "type": "record",
+ "name":"Account2",
+ "fields": [
+	{"name":"eventId","type": "string"},
+	{"name":"created","type": "int"},
+	{"name":"eventType","type": "string"},
+	{"name":"versions","type":
+		{"name":"v1","type":"record","fields":[
+			{"name":"version","type": "string"},
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"}
+		]}
+	}
+  ]
+}
+
+{"namespace": "com.onlineinteract.workflow.domain.account.v1",
+ "type": "record",
+ "name":"Account2",
+ "fields": [
+	{"name":"eventId","type": "string"},
+	{"name":"created","type": "int"},
+	{"name":"eventType","type": "string"},
+	{"name":"v1","type":
+		{"name":"AccountV1","type":"record","fields":[
+			{"name":"version","type": "string"},
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"}
+		]}
+	},
+	{"name":"v2","type":
+		{"name":"AccountV2","type":"record","fields":[
+			{"name":"version","type": "string"},
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"},
+			{"name":"enabled","type": "string"}
+		]}
+	}
+  ]
+}
+
+{"namespace": "com.onlineinteract.workflow.domain.account",
+ "type": "record",
+ "name":"AccountEvent",
+ "fields": [
+	{"name":"eventId","type": "string"},
+	{"name":"created","type": "long"},
+	{"name":"eventType","type": "string"},
+	{"name":"version","type": "long"},
+	{"name":"v1","type":["null",
+		{"namespace": "com.onlineinteract.workflow.domain.account.v1","name":"AccountV1","type":"record","fields":[
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"}
+		]}],
+    	"default": null
+	}
+  ]
+}
+
+{"namespace": "com.onlineinteract.workflow.domain.account",
+ "type": "record",
+ "name":"AccountEvent",
+ "fields": [
+	{"name":"eventId","type": "string"},
+	{"name":"created","type": "long"},
+	{"name":"eventType","type": "string"},
+	{"name":"version","type": "long"},
+	{"name":"v1","type":["null",
+		{"namespace": "com.onlineinteract.workflow.domain.account.v1","name":"AccountV1","type":"record","fields":[
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"}
+		]}],
+    	"default": null
+	},
+	{"name":"v2","type":["null",
+		{"namespace": "com.onlineinteract.workflow.domain.account.v2","name":"AccountV2","type":"record","fields":[
+			{"name":"id","type": "string"},
+			{"name":"name","type": "string"},
+			{"name":"type","type": "string"},
+			{"name":"openingBalance","type": "string"},
+			{"name":"savingsRate","type": "string"},
+			{"name":"enabled","type": "boolean"},
+			{"name":"addr1","type": "string"},
+			{"name":"addr2","type": "string"}
+		]}],
+    	"default": null
+	}
+  ]
+}
