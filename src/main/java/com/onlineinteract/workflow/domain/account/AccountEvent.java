@@ -5,21 +5,79 @@
  */
 package com.onlineinteract.workflow.domain.account;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -6676954561565019725L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AccountEvent\",\"namespace\":\"com.onlineinteract.workflow.domain.account\",\"fields\":[{\"name\":\"eventId\",\"type\":\"string\"},{\"name\":\"created\",\"type\":\"long\"},{\"name\":\"eventType\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"long\"},{\"name\":\"v1\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"AccountV1\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v1\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"}]}],\"default\":null},{\"name\":\"v2\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"AccountV2\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v2\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"},{\"name\":\"enabled\",\"type\":\"boolean\"},{\"name\":\"addr1\",\"type\":\"string\"},{\"name\":\"addr2\",\"type\":\"string\"}]}],\"default\":null},{\"name\":\"v3\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"AccountV3\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v3\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"},{\"name\":\"enabled\",\"type\":\"boolean\"},{\"name\":\"addr\",\"type\":\"string\"}]}],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  @Deprecated public java.lang.CharSequence eventId;
-  @Deprecated public long created;
-  @Deprecated public java.lang.CharSequence eventType;
-  @Deprecated public long version;
-  @Deprecated public com.onlineinteract.workflow.domain.account.v1.AccountV1 v1;
-  @Deprecated public com.onlineinteract.workflow.domain.account.v2.AccountV2 v2;
-  @Deprecated public com.onlineinteract.workflow.domain.account.v3.AccountV3 v3;
+
+  private static SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<AccountEvent> ENCODER =
+      new BinaryMessageEncoder<AccountEvent>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<AccountEvent> DECODER =
+      new BinaryMessageDecoder<AccountEvent>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<AccountEvent> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<AccountEvent> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<AccountEvent> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<AccountEvent>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this AccountEvent to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a AccountEvent from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a AccountEvent instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static AccountEvent fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
+   private java.lang.CharSequence eventId;
+   private long created;
+   private java.lang.CharSequence eventType;
+   private long version;
+   private com.onlineinteract.workflow.domain.account.v1.AccountV1 v1;
+   private com.onlineinteract.workflow.domain.account.v2.AccountV2 v2;
+   private com.onlineinteract.workflow.domain.account.v3.AccountV3 v3;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -48,6 +106,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     this.v3 = v3;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -59,7 +118,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     case 4: return v1;
     case 5: return v2;
     case 6: return v3;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -74,7 +133,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     case 4: v1 = (com.onlineinteract.workflow.domain.account.v1.AccountV1)value$; break;
     case 5: v2 = (com.onlineinteract.workflow.domain.account.v2.AccountV2)value$; break;
     case 6: v3 = (com.onlineinteract.workflow.domain.account.v3.AccountV3)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -85,6 +144,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.CharSequence getEventId() {
     return eventId;
   }
+
 
   /**
    * Sets the value of the 'eventId' field.
@@ -98,15 +158,16 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
    * Gets the value of the 'created' field.
    * @return The value of the 'created' field.
    */
-  public java.lang.Long getCreated() {
+  public long getCreated() {
     return created;
   }
+
 
   /**
    * Sets the value of the 'created' field.
    * @param value the value to set.
    */
-  public void setCreated(java.lang.Long value) {
+  public void setCreated(long value) {
     this.created = value;
   }
 
@@ -117,6 +178,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
   public java.lang.CharSequence getEventType() {
     return eventType;
   }
+
 
   /**
    * Sets the value of the 'eventType' field.
@@ -130,15 +192,16 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
    * Gets the value of the 'version' field.
    * @return The value of the 'version' field.
    */
-  public java.lang.Long getVersion() {
+  public long getVersion() {
     return version;
   }
+
 
   /**
    * Sets the value of the 'version' field.
    * @param value the value to set.
    */
-  public void setVersion(java.lang.Long value) {
+  public void setVersion(long value) {
     this.version = value;
   }
 
@@ -149,6 +212,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
   public com.onlineinteract.workflow.domain.account.v1.AccountV1 getV1() {
     return v1;
   }
+
 
   /**
    * Sets the value of the 'v1' field.
@@ -166,6 +230,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     return v2;
   }
 
+
   /**
    * Sets the value of the 'v2' field.
    * @param value the value to set.
@@ -181,6 +246,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
   public com.onlineinteract.workflow.domain.account.v3.AccountV3 getV3() {
     return v3;
   }
+
 
   /**
    * Sets the value of the 'v3' field.
@@ -204,7 +270,11 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new AccountEvent RecordBuilder
    */
   public static com.onlineinteract.workflow.domain.account.AccountEvent.Builder newBuilder(com.onlineinteract.workflow.domain.account.AccountEvent.Builder other) {
-    return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder(other);
+    if (other == null) {
+      return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder();
+    } else {
+      return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder(other);
+    }
   }
 
   /**
@@ -213,12 +283,17 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
    * @return A new AccountEvent RecordBuilder
    */
   public static com.onlineinteract.workflow.domain.account.AccountEvent.Builder newBuilder(com.onlineinteract.workflow.domain.account.AccountEvent other) {
-    return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder(other);
+    if (other == null) {
+      return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder();
+    } else {
+      return new com.onlineinteract.workflow.domain.account.AccountEvent.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for AccountEvent instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<AccountEvent>
     implements org.apache.avro.data.RecordBuilder<AccountEvent> {
 
@@ -246,37 +321,37 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       super(other);
       if (isValidValue(fields()[0], other.eventId)) {
         this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.created)) {
         this.created = data().deepCopy(fields()[1].schema(), other.created);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.eventType)) {
         this.eventType = data().deepCopy(fields()[2].schema(), other.eventType);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.version)) {
         this.version = data().deepCopy(fields()[3].schema(), other.version);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.v1)) {
         this.v1 = data().deepCopy(fields()[4].schema(), other.v1);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (other.hasV1Builder()) {
         this.v1Builder = com.onlineinteract.workflow.domain.account.v1.AccountV1.newBuilder(other.getV1Builder());
       }
       if (isValidValue(fields()[5], other.v2)) {
         this.v2 = data().deepCopy(fields()[5].schema(), other.v2);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (other.hasV2Builder()) {
         this.v2Builder = com.onlineinteract.workflow.domain.account.v2.AccountV2.newBuilder(other.getV2Builder());
       }
       if (isValidValue(fields()[6], other.v3)) {
         this.v3 = data().deepCopy(fields()[6].schema(), other.v3);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
       if (other.hasV3Builder()) {
         this.v3Builder = com.onlineinteract.workflow.domain.account.v3.AccountV3.newBuilder(other.getV3Builder());
@@ -288,7 +363,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
      * @param other The existing instance to copy.
      */
     private Builder(com.onlineinteract.workflow.domain.account.AccountEvent other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.eventId)) {
         this.eventId = data().deepCopy(fields()[0].schema(), other.eventId);
         fieldSetFlags()[0] = true;
@@ -330,6 +405,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       return eventId;
     }
 
+
     /**
       * Sets the value of the 'eventId' field.
       * @param value The value of 'eventId'.
@@ -365,9 +441,10 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       * Gets the value of the 'created' field.
       * @return The value.
       */
-    public java.lang.Long getCreated() {
+    public long getCreated() {
       return created;
     }
+
 
     /**
       * Sets the value of the 'created' field.
@@ -407,6 +484,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       return eventType;
     }
 
+
     /**
       * Sets the value of the 'eventType' field.
       * @param value The value of 'eventType'.
@@ -442,9 +520,10 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       * Gets the value of the 'version' field.
       * @return The value.
       */
-    public java.lang.Long getVersion() {
+    public long getVersion() {
       return version;
     }
+
 
     /**
       * Sets the value of the 'version' field.
@@ -483,6 +562,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     public com.onlineinteract.workflow.domain.account.v1.AccountV1 getV1() {
       return v1;
     }
+
 
     /**
       * Sets the value of the 'v1' field.
@@ -558,6 +638,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       return v2;
     }
 
+
     /**
       * Sets the value of the 'v2' field.
       * @param value The value of 'v2'.
@@ -632,6 +713,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
       return v3;
     }
 
+
     /**
       * Sets the value of the 'v3' field.
       * @param value The value of 'v3'.
@@ -699,6 +781,7 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public AccountEvent build() {
       try {
         AccountEvent record = new AccountEvent();
@@ -707,41 +790,213 @@ public class AccountEvent extends org.apache.avro.specific.SpecificRecordBase im
         record.eventType = fieldSetFlags()[2] ? this.eventType : (java.lang.CharSequence) defaultValue(fields()[2]);
         record.version = fieldSetFlags()[3] ? this.version : (java.lang.Long) defaultValue(fields()[3]);
         if (v1Builder != null) {
-          record.v1 = this.v1Builder.build();
+          try {
+            record.v1 = this.v1Builder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("v1"));
+            throw e;
+          }
         } else {
           record.v1 = fieldSetFlags()[4] ? this.v1 : (com.onlineinteract.workflow.domain.account.v1.AccountV1) defaultValue(fields()[4]);
         }
         if (v2Builder != null) {
-          record.v2 = this.v2Builder.build();
+          try {
+            record.v2 = this.v2Builder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("v2"));
+            throw e;
+          }
         } else {
           record.v2 = fieldSetFlags()[5] ? this.v2 : (com.onlineinteract.workflow.domain.account.v2.AccountV2) defaultValue(fields()[5]);
         }
         if (v3Builder != null) {
-          record.v3 = this.v3Builder.build();
+          try {
+            record.v3 = this.v3Builder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("v3"));
+            throw e;
+          }
         } else {
           record.v3 = fieldSetFlags()[6] ? this.v3 : (com.onlineinteract.workflow.domain.account.v3.AccountV3) defaultValue(fields()[6]);
         }
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<AccountEvent>
+    WRITER$ = (org.apache.avro.io.DatumWriter<AccountEvent>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<AccountEvent>
+    READER$ = (org.apache.avro.io.DatumReader<AccountEvent>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.eventId);
+
+    out.writeLong(this.created);
+
+    out.writeString(this.eventType);
+
+    out.writeLong(this.version);
+
+    if (this.v1 == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.v1.customEncode(out);
+    }
+
+    if (this.v2 == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.v2.customEncode(out);
+    }
+
+    if (this.v3 == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.v3.customEncode(out);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.eventId = in.readString(this.eventId instanceof Utf8 ? (Utf8)this.eventId : null);
+
+      this.created = in.readLong();
+
+      this.eventType = in.readString(this.eventType instanceof Utf8 ? (Utf8)this.eventType : null);
+
+      this.version = in.readLong();
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.v1 = null;
+      } else {
+        if (this.v1 == null) {
+          this.v1 = new com.onlineinteract.workflow.domain.account.v1.AccountV1();
+        }
+        this.v1.customDecode(in);
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.v2 = null;
+      } else {
+        if (this.v2 == null) {
+          this.v2 = new com.onlineinteract.workflow.domain.account.v2.AccountV2();
+        }
+        this.v2.customDecode(in);
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.v3 = null;
+      } else {
+        if (this.v3 == null) {
+          this.v3 = new com.onlineinteract.workflow.domain.account.v3.AccountV3();
+        }
+        this.v3.customDecode(in);
+      }
+
+    } else {
+      for (int i = 0; i < 7; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.eventId = in.readString(this.eventId instanceof Utf8 ? (Utf8)this.eventId : null);
+          break;
+
+        case 1:
+          this.created = in.readLong();
+          break;
+
+        case 2:
+          this.eventType = in.readString(this.eventType instanceof Utf8 ? (Utf8)this.eventType : null);
+          break;
+
+        case 3:
+          this.version = in.readLong();
+          break;
+
+        case 4:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.v1 = null;
+          } else {
+            if (this.v1 == null) {
+              this.v1 = new com.onlineinteract.workflow.domain.account.v1.AccountV1();
+            }
+            this.v1.customDecode(in);
+          }
+          break;
+
+        case 5:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.v2 = null;
+          } else {
+            if (this.v2 == null) {
+              this.v2 = new com.onlineinteract.workflow.domain.account.v2.AccountV2();
+            }
+            this.v2.customDecode(in);
+          }
+          break;
+
+        case 6:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.v3 = null;
+          } else {
+            if (this.v3 == null) {
+              this.v3 = new com.onlineinteract.workflow.domain.account.v3.AccountV3();
+            }
+            this.v3.customDecode(in);
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

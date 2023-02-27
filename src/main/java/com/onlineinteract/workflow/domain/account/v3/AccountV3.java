@@ -5,21 +5,79 @@
  */
 package com.onlineinteract.workflow.domain.account.v3;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -3819020530166381343L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"AccountV3\",\"namespace\":\"com.onlineinteract.workflow.domain.account.v3\",\"fields\":[{\"name\":\"id\",\"type\":\"string\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"type\",\"type\":\"string\"},{\"name\":\"openingBalance\",\"type\":\"string\"},{\"name\":\"savingsRate\",\"type\":\"string\"},{\"name\":\"enabled\",\"type\":\"boolean\"},{\"name\":\"addr\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  @Deprecated public java.lang.CharSequence id;
-  @Deprecated public java.lang.CharSequence name;
-  @Deprecated public java.lang.CharSequence type;
-  @Deprecated public java.lang.CharSequence openingBalance;
-  @Deprecated public java.lang.CharSequence savingsRate;
-  @Deprecated public boolean enabled;
-  @Deprecated public java.lang.CharSequence addr;
+
+  private static SpecificData MODEL$ = new SpecificData();
+
+  private static final BinaryMessageEncoder<AccountV3> ENCODER =
+      new BinaryMessageEncoder<AccountV3>(MODEL$, SCHEMA$);
+
+  private static final BinaryMessageDecoder<AccountV3> DECODER =
+      new BinaryMessageDecoder<AccountV3>(MODEL$, SCHEMA$);
+
+  /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<AccountV3> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
+   * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
+   */
+  public static BinaryMessageDecoder<AccountV3> getDecoder() {
+    return DECODER;
+  }
+
+  /**
+   * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
+   * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
+   */
+  public static BinaryMessageDecoder<AccountV3> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<AccountV3>(MODEL$, SCHEMA$, resolver);
+  }
+
+  /**
+   * Serializes this AccountV3 to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
+  public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
+    return ENCODER.encode(this);
+  }
+
+  /**
+   * Deserializes a AccountV3 from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a AccountV3 instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
+  public static AccountV3 fromByteBuffer(
+      java.nio.ByteBuffer b) throws java.io.IOException {
+    return DECODER.decode(b);
+  }
+
+   private java.lang.CharSequence id;
+   private java.lang.CharSequence name;
+   private java.lang.CharSequence type;
+   private java.lang.CharSequence openingBalance;
+   private java.lang.CharSequence savingsRate;
+   private boolean enabled;
+   private java.lang.CharSequence addr;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -48,6 +106,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     this.addr = addr;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -59,7 +118,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     case 4: return savingsRate;
     case 5: return enabled;
     case 6: return addr;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -74,7 +133,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     case 4: savingsRate = (java.lang.CharSequence)value$; break;
     case 5: enabled = (java.lang.Boolean)value$; break;
     case 6: addr = (java.lang.CharSequence)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -85,6 +144,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
   public java.lang.CharSequence getId() {
     return id;
   }
+
 
   /**
    * Sets the value of the 'id' field.
@@ -102,6 +162,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     return name;
   }
 
+
   /**
    * Sets the value of the 'name' field.
    * @param value the value to set.
@@ -117,6 +178,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
   public java.lang.CharSequence getType() {
     return type;
   }
+
 
   /**
    * Sets the value of the 'type' field.
@@ -134,6 +196,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     return openingBalance;
   }
 
+
   /**
    * Sets the value of the 'openingBalance' field.
    * @param value the value to set.
@@ -150,6 +213,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     return savingsRate;
   }
 
+
   /**
    * Sets the value of the 'savingsRate' field.
    * @param value the value to set.
@@ -162,15 +226,16 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
    * Gets the value of the 'enabled' field.
    * @return The value of the 'enabled' field.
    */
-  public java.lang.Boolean getEnabled() {
+  public boolean getEnabled() {
     return enabled;
   }
+
 
   /**
    * Sets the value of the 'enabled' field.
    * @param value the value to set.
    */
-  public void setEnabled(java.lang.Boolean value) {
+  public void setEnabled(boolean value) {
     this.enabled = value;
   }
 
@@ -181,6 +246,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
   public java.lang.CharSequence getAddr() {
     return addr;
   }
+
 
   /**
    * Sets the value of the 'addr' field.
@@ -204,7 +270,11 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
    * @return A new AccountV3 RecordBuilder
    */
   public static com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder newBuilder(com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder other) {
-    return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder(other);
+    if (other == null) {
+      return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder();
+    } else {
+      return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder(other);
+    }
   }
 
   /**
@@ -213,12 +283,17 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
    * @return A new AccountV3 RecordBuilder
    */
   public static com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder newBuilder(com.onlineinteract.workflow.domain.account.v3.AccountV3 other) {
-    return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder(other);
+    if (other == null) {
+      return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder();
+    } else {
+      return new com.onlineinteract.workflow.domain.account.v3.AccountV3.Builder(other);
+    }
   }
 
   /**
    * RecordBuilder for AccountV3 instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<AccountV3>
     implements org.apache.avro.data.RecordBuilder<AccountV3> {
 
@@ -243,31 +318,31 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       super(other);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (isValidValue(fields()[1], other.name)) {
         this.name = data().deepCopy(fields()[1].schema(), other.name);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (isValidValue(fields()[2], other.type)) {
         this.type = data().deepCopy(fields()[2].schema(), other.type);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.openingBalance)) {
         this.openingBalance = data().deepCopy(fields()[3].schema(), other.openingBalance);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.savingsRate)) {
         this.savingsRate = data().deepCopy(fields()[4].schema(), other.savingsRate);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (isValidValue(fields()[5], other.enabled)) {
         this.enabled = data().deepCopy(fields()[5].schema(), other.enabled);
-        fieldSetFlags()[5] = true;
+        fieldSetFlags()[5] = other.fieldSetFlags()[5];
       }
       if (isValidValue(fields()[6], other.addr)) {
         this.addr = data().deepCopy(fields()[6].schema(), other.addr);
-        fieldSetFlags()[6] = true;
+        fieldSetFlags()[6] = other.fieldSetFlags()[6];
       }
     }
 
@@ -276,7 +351,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
      * @param other The existing instance to copy.
      */
     private Builder(com.onlineinteract.workflow.domain.account.v3.AccountV3 other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.id)) {
         this.id = data().deepCopy(fields()[0].schema(), other.id);
         fieldSetFlags()[0] = true;
@@ -314,6 +389,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     public java.lang.CharSequence getId() {
       return id;
     }
+
 
     /**
       * Sets the value of the 'id' field.
@@ -354,6 +430,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       return name;
     }
 
+
     /**
       * Sets the value of the 'name' field.
       * @param value The value of 'name'.
@@ -392,6 +469,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     public java.lang.CharSequence getType() {
       return type;
     }
+
 
     /**
       * Sets the value of the 'type' field.
@@ -432,6 +510,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       return openingBalance;
     }
 
+
     /**
       * Sets the value of the 'openingBalance' field.
       * @param value The value of 'openingBalance'.
@@ -471,6 +550,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       return savingsRate;
     }
 
+
     /**
       * Sets the value of the 'savingsRate' field.
       * @param value The value of 'savingsRate'.
@@ -506,9 +586,10 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       * Gets the value of the 'enabled' field.
       * @return The value.
       */
-    public java.lang.Boolean getEnabled() {
+    public boolean getEnabled() {
       return enabled;
     }
+
 
     /**
       * Sets the value of the 'enabled' field.
@@ -548,6 +629,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
       return addr;
     }
 
+
     /**
       * Sets the value of the 'addr' field.
       * @param value The value of 'addr'.
@@ -580,6 +662,7 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public AccountV3 build() {
       try {
         AccountV3 record = new AccountV3();
@@ -591,26 +674,117 @@ public class AccountV3 extends org.apache.avro.specific.SpecificRecordBase imple
         record.enabled = fieldSetFlags()[5] ? this.enabled : (java.lang.Boolean) defaultValue(fields()[5]);
         record.addr = fieldSetFlags()[6] ? this.addr : (java.lang.CharSequence) defaultValue(fields()[6]);
         return record;
-      } catch (Exception e) {
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }
   }
 
-  private static final org.apache.avro.io.DatumWriter
-    WRITER$ = new org.apache.avro.specific.SpecificDatumWriter(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumWriter<AccountV3>
+    WRITER$ = (org.apache.avro.io.DatumWriter<AccountV3>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
-  private static final org.apache.avro.io.DatumReader
-    READER$ = new org.apache.avro.specific.SpecificDatumReader(SCHEMA$);
+  @SuppressWarnings("unchecked")
+  private static final org.apache.avro.io.DatumReader<AccountV3>
+    READER$ = (org.apache.avro.io.DatumReader<AccountV3>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    out.writeString(this.id);
+
+    out.writeString(this.name);
+
+    out.writeString(this.type);
+
+    out.writeString(this.openingBalance);
+
+    out.writeString(this.savingsRate);
+
+    out.writeBoolean(this.enabled);
+
+    out.writeString(this.addr);
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      this.id = in.readString(this.id instanceof Utf8 ? (Utf8)this.id : null);
+
+      this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
+
+      this.type = in.readString(this.type instanceof Utf8 ? (Utf8)this.type : null);
+
+      this.openingBalance = in.readString(this.openingBalance instanceof Utf8 ? (Utf8)this.openingBalance : null);
+
+      this.savingsRate = in.readString(this.savingsRate instanceof Utf8 ? (Utf8)this.savingsRate : null);
+
+      this.enabled = in.readBoolean();
+
+      this.addr = in.readString(this.addr instanceof Utf8 ? (Utf8)this.addr : null);
+
+    } else {
+      for (int i = 0; i < 7; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          this.id = in.readString(this.id instanceof Utf8 ? (Utf8)this.id : null);
+          break;
+
+        case 1:
+          this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
+          break;
+
+        case 2:
+          this.type = in.readString(this.type instanceof Utf8 ? (Utf8)this.type : null);
+          break;
+
+        case 3:
+          this.openingBalance = in.readString(this.openingBalance instanceof Utf8 ? (Utf8)this.openingBalance : null);
+          break;
+
+        case 4:
+          this.savingsRate = in.readString(this.savingsRate instanceof Utf8 ? (Utf8)this.savingsRate : null);
+          break;
+
+        case 5:
+          this.enabled = in.readBoolean();
+          break;
+
+        case 6:
+          this.addr = in.readString(this.addr instanceof Utf8 ? (Utf8)this.addr : null);
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
