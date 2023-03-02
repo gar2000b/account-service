@@ -81,8 +81,8 @@ public class AccountDomainTests {
 	@Autowired
 	DataFixEventGenerator dataFixEventGenerator;
 
-	static final int NO_OF_THREADS = 25;
-	static int totalNoOfTransactions = 50000;
+	static final int NO_OF_THREADS = 1;
+	static int totalNoOfTransactions = 3000;
 	private Map<String, AccountV3> accountsCreated = new HashMap<>();
 	List<String> accountsCreatedKeyList = new ArrayList<String>();
 	private Map<String, Long> accountsCreatedTime = new HashMap<>();
@@ -102,17 +102,19 @@ public class AccountDomainTests {
 		end = System.currentTimeMillis();
 
 		for (int i = 0; i < NO_OF_THREADS; i++) {
+			int finalI = i;
 			executor.submit(new Thread(() -> {
 				while (count < totalNoOfTransactions) {
 					try {
-						randomCommand();
+//						randomCommand();
+						createAccount(generateAccountJsonV3());
 						count++;
 						if (count % 1000 == 0) {
 							end = System.currentTimeMillis();
 							diff = end - start;
 							start = end;
 							tps = (long) (1000 / (diff / 1000d));
-							System.out.println("Time every 1000 records: " + diff + "ms with a tps: " + tps);
+							System.out.println("Time every 1000 records: " + diff + "ms with a tps: " + tps + " on thread: " + finalI);
 						}
 					} catch (Error e) {
 						System.out.println("Thread caught an exception");
@@ -252,7 +254,7 @@ public class AccountDomainTests {
 		accountV3.get().setOpeningBalance("$" + ThreadLocalRandom.current().nextInt(400, 1001));
 		ThreadLocal<String> accountJson = ThreadLocal.withInitial(() -> accountV3ToJson(accountV3.get()));
 
-		String accountServiceUrl = "http://colossal.canadacentral.cloudapp.azure.com:9087/account";
+		String accountServiceUrl = "http://localhost:9087/account";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -305,7 +307,7 @@ public class AccountDomainTests {
 	}
 
 	private synchronized void createAccount(String accountJson) {
-		String accountServiceUrl = "http://colossal.canadacentral.cloudapp.azure.com:9087/account";
+		String accountServiceUrl = "http://localhost:9087/account";
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
